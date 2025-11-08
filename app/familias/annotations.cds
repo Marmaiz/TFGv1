@@ -1,0 +1,159 @@
+using MasterDataService as service from '../../srv/service';
+annotate service.Familias with @(
+    UI.FieldGroup #GeneratedGroup : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Label : 'Family_Name',
+                Value : Family_Name,
+            },
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'GeneratedFacet1',
+            Label : 'General Information',
+            Target : '@UI.FieldGroup#GeneratedGroup',
+        },
+    ],
+    UI.LineItem : [
+        {
+            $Type : 'UI.DataField',
+            Label : '{i18n>Familyname}',
+            Value : Family_Name,
+        },
+    ],
+    UI.SelectionFields : [
+        Family_Name,
+    ],
+    UI.SelectionPresentationVariant #tableView : {
+        $Type : 'UI.SelectionPresentationVariantType',
+        PresentationVariant : {
+            $Type : 'UI.PresentationVariantType',
+            Visualizations : [
+                '@UI.LineItem',
+            ],
+        },
+        SelectionVariant : {
+            $Type : 'UI.SelectionVariantType',
+            SelectOptions : [
+            ],
+        },
+        Text : 'Familia',
+    },
+);
+
+annotate service.Familias with {
+    Family_Name @Common.Label : '{i18n>Nombre}'
+};
+
+annotate service.Producto with @(
+    UI.LineItem #tableView : [
+        {
+            $Type : 'UI.DataField',
+            Value : Nombre,
+            Label : 'Producto',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : Familia.Family_Name,
+            Label : 'Familia',
+        },
+    ],
+    UI.SelectionPresentationVariant #tableView : {
+        $Type : 'UI.SelectionPresentationVariantType',
+        PresentationVariant : {
+            $Type : 'UI.PresentationVariantType',
+            Visualizations : [
+                '@UI.LineItem#tableView',
+            ],
+        },
+        SelectionVariant : {
+            $Type : 'UI.SelectionVariantType',
+            SelectOptions : [
+            ],
+        },
+        Text : 'Table View Producto',
+    },
+    UI.HeaderInfo : {
+        Title : {
+            $Type : 'UI.DataField',
+            Value : Nombre,
+        },
+        TypeName : '',
+        TypeNamePlural : '',
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : 'Información General',
+            ID : 'InformacinGeneral',
+            Target : '@UI.FieldGroup#InformacinGeneral',
+        },
+    ],
+    UI.FieldGroup #InformacinGeneral : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : Familia_Family_Id,
+                Label : 'Familia_Family_Id',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : Nombre,
+                Label : 'Nombre',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : Calibre.Calibre_Id,
+                Label : 'Calibre_Id',
+            },
+        ],
+    },
+);
+
+annotate service.Calibre with @(
+    UI.LineItem #Calibre : [
+    ]
+);
+
+annotate service.Producto with {
+    Familia @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Familias',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : Familia_Family_Id,
+                    ValueListProperty : 'Family_Id',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+)};
+
+annotate service.Familias with {
+    Family_Id @Common.Text : Family_Name
+};
+
+annotate service.Calibre with {
+    Calibre_Id @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Calibre',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : Calibre_Id,
+                    ValueListProperty : 'Calibre_Id',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+        Common.Text : Nombre,
+)};
+

@@ -1,0 +1,132 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "pedidos",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.19.3",
+      "toolsId": "7063105e-8e1f-49d8-bb92-7a76091b819a"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v2/nuevo-servicio/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "pedidos-display": {
+          "semanticObject": "pedidos",
+          "action": "display",
+          "title": "{{pedidos-display.flpTitle}}",
+          "subTitle": "{{pedidos-display.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.142.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "pedidos.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "defaultBindingMode": "TwoWay"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "pedidos.view",
+        "async": true,
+        "viewPath": "pedidos.view"
+      },
+      "routes": [
+        {
+          "name": "RoutePedidos",
+          "pattern": ":?query:",
+          "target": [
+            "TargetPedidos"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetPedidos": {
+          "id": "Pedidos",
+          "name": "Pedidos"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "pedidos.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
