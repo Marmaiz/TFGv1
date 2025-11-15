@@ -10,42 +10,42 @@ using {
 /***** Entidades de datos maestros ********/
 
 entity Familias : managed {
-    key Family_Id   : UUID;
+    key Id   : UUID;
         Family_Name : String(100);
 }
 
 entity Calibre {
-    key Calibre_Id       : UUID;
+    key Id       : UUID;
         Nombre           : String(50);
         Peso_Aprox_Pieza : String(20);
 }
 
 entity Caja {
-    key Caja_Id  : UUID;
+    key Id  : UUID;
         Nombre   : String(50);
         Peso     : Integer;
-        Calibre  : Association to one Calibre;
-        Producto : Association to one Producto;
+        Calibre  : Association to Calibre;
+        Producto : Association to Producto;
 };
 
 entity Producto : managed {
-    key ID      : UUID;
+    key Id      : UUID;
         Nombre  : String(100);
-        Familia : Association to one Familias;
+        Familia : Association to Familias;
         Calibre : Association to many Calibre
-                      on Calibre.Calibre_Id
+                      on Calibre.Id
 }
 
 entity Pedido : managed {
-    key Pedido_Id    : UUID;
-        Cliente      : Association to one Cliente;
+    key Id    : UUID;
+        Cliente      : Association to Cliente;
         Fecha_Pedido : Date;
-        Estado       : Association to one Estado default 'C';
+        Estado       : Association to Estado default 'C';
         Linea        : Composition of many {
-                           key ID       : UUID;
-                               Producto : Association to one Producto;
-                               Calibre  : Association to one Calibre;
-                               Caja     : Association to one Caja;
+                           key Id       : UUID;
+                               Producto : Association to Producto;
+                               Calibre  : Association to Calibre;
+                               Caja     : Association to Caja;
                                Kilos    : Integer;
                                Precio   : Integer;
                        }
@@ -62,7 +62,7 @@ entity Estado : CodeList {
 }
 
 entity Cliente : managed {
-    key Cliente_Id : UUID;
+    key Id : UUID;
         Nombre     : String(50);
         CIF        : String(10);
         Direccion  : String(100);
