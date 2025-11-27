@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="pedidos.controller.Formulario"
+	controllerName="pedidos.controller.DetallePedido"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
@@ -44,21 +44,24 @@
 						<Toolbar>
 							<Title id="Title2" text="Pedido {Id}"/>
 							<ToolbarSpacer />
-							<Button icon="sap-icon://settings"/>
+							<Button id="btnEditarPedido" text="Editar pedido" press="onHacerEditable"/>
 						</Toolbar>
 					</f:toolbar>
 					<f:formElements>
 						<f:FormElement label="Cliente">
 							<f:fields>
 								<ComboBox
-                                    items="{ path: '/Pedido', parameters: {expand: 'Cliente'} }" selectedKey="Id" value="{Cliente/Nombre}">
+								id="inputClientePedido"
+								editable="false"
+                                    items="{ path: '/Cliente'}" selectedKey="{Cliente_Id}">
                                     <core:Item key="{Id}" text="{Nombre}" />
                                 </ComboBox>
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="Fecha">
 							<f:fields>
-								<DatePicker dateValue="{Fecha_Pedido}" displayFormat="dd/MM/yyyy"/>
+								<DatePicker 
+								editable="false" id="inputFechaPedido" dateValue="{Fecha_Pedido}" displayFormat="dd/MM/yyyy" />
 							</f:fields>
 						</f:FormElement>
 					</f:formElements>
@@ -69,14 +72,14 @@
 		<Toolbar id="TB2">
 			<Title id="Title3" text="Nueva linea del pedido"/>
 			<ToolbarSpacer />
-			<Button id="btnAgregarLinea" text="Nueva linea" press="onAgregarLinea" />
-			<Button id="btnEliminarLinea" text="Eliminar" press="onEliminarLinea" />
+			<Button id="btnAgregarLinea" text="Nueva linea" press="onAgregarLinea" enabled="false"/>
+			<Button id="btnEliminarLinea" text="Eliminar" press="onEliminarLinea" enabled="false"/>
 		</Toolbar>
 		
 
 		<VBox>
 			<t:Table id="itemsTable"
-			rows="{ path: 'Linea'}"
+			rows="{ path: 'Linea', parameters: {expand: 'Caja, Calibre, Producto'}}"
 				selectionMode="MultiToggle"
 				ariaLabelledBy="title">
 		
@@ -85,6 +88,9 @@
 					}"> Solo se ve el ID de los pedidos-->
 					<t:columns>
 						<t:Column><Text text="Id"/></t:Column>
+						<t:Column><Text text="Producto"/></t:Column>
+						<t:Column><Text text="Caja"/></t:Column>
+						<t:Column><Text text="Calibre"/></t:Column>
 						<t:Column><Text text="Kilos"/></t:Column>
 						<t:Column><Text text="Precio"/></t:Column>
 					</t:columns>
@@ -98,28 +104,42 @@
 						</t:Column>
 
 						<t:Column>
-							<Label text="Kilos" />
+							<Label text="Producto" />
 							<t:template>
-								<Text text="{Kilos}" wrapping="false"/>
+								<Text text="{Producto/Nombre}" wrapping="false"/>
 							</t:template>
 						</t:Column>	
 
 						<t:Column>
-							<Label text="Id" />
+							<Label text="Caja" />
 							<t:template>
-								<Text text="{Precio}" wrapping="false"/>
+								<Text text="{Caja/Nombre}" wrapping="false"/>
 							</t:template>
 						</t:Column>		
 
 						<t:Column>
 							<Label text="Calibre" />
 							<t:template>
-								<Text text="{Precio}" wrapping="false"/>
+								<Text text="{Calibre/Nombre}" wrapping="false"/>
 							</t:template>
 						</t:Column>	
 
 						<t:Column>
-							<Label text="Caja" />
+							<Label text="Kilos" />
+							<t:template>
+								<Text text="{Kilos}" wrapping="false"/>								
+							</t:template>
+						</t:Column>	
+						
+						<t:Column>
+							<Label text="Kilos" />
+							<t:template>
+								<Input value="{Kilos}" editable="false" />								
+							</t:template>
+						</t:Column>	
+
+						<t:Column>
+							<Label text="Precio" />
 							<t:template>
 								<Text text="{Precio}" wrapping="false"/>
 							</t:template>

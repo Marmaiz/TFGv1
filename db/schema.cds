@@ -9,7 +9,7 @@ using {
 
 /***** Entidades de datos maestros ********/
 
-entity Familias : managed {
+entity Familias {
     key Id   : UUID;
         Family_Name : String(100);
 }
@@ -28,7 +28,7 @@ entity Caja {
         Producto : Association to Producto;
 };
 
-entity Producto : managed {
+entity Producto {
     key Id      : UUID;
         Nombre  : String(100);
         Familia : Association to Familias;
@@ -61,7 +61,7 @@ entity Estado : CodeList {
         };
 }
 
-entity Cliente : managed {
+entity Cliente {
     key Id : UUID;
         Nombre     : String(50);
         CIF        : String(10);

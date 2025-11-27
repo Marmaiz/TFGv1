@@ -1,4 +1,4 @@
-Id,Nombre,CIF,Direccion,Telefono,createdAt,createdBy,modifiedAt,modifiedBy
+Id,Nombre,CIF,Direccion,Telefono
 c1d2e3f4-0000-0000-0000-000000000033,Juanito, 33224422,Calle falsa 123, 33445566
 c1d2e3f4-0000-0000-0000-000000000032,Mercadona, 33224422,Calle falsa 123, 33445566
 c1d2e3f4-0000-0000-0000-000000000035,Menos mal que alguien te ashuda, 33224422,Quiero beso 123, 33445566

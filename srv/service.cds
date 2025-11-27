@@ -20,13 +20,23 @@ service MasterDataService  {
 }
 
 service NuevoServicio {
-
-  @odata.draft.enabled 
-  @fiori.draft.enabled
+  
   entity Pedido as projection on TFGMaria.Pedido;
 
   @odata.draft.enabled 
   @fiori.draft.enabled
   entity Cliente as projection on TFGMaria.Cliente;
+
+  @odata.draft.enabled 
+  @fiori.draft.enabled
+  entity Calibre as projection on TFGMaria.Calibre;
+
+  @odata.draft.enabled 
+  @fiori.draft.enabled
+  entity Caja as projection on TFGMaria.Caja;
+
+  @odata.draft.enabled 
+  @fiori.draft.enabled
+  entity Producto as projection on TFGMaria.Producto;
 
 }

@@ -128,7 +128,7 @@
           "name": "Pedidos"
         },
          "DetallePedido": {
-          "name": "Formulario"
+          "name": "DetallePedido"
         }
       }
     },

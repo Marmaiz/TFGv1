@@ -20,8 +20,14 @@
 			</Toolbar>
 
 				<t:Table
-				id="table"
-				rows="{ path: '/Pedido', parameters: {expand: 'Cliente,Estado'} }"
+				id="tablaPedidos"
+				rows="{ path: '/Pedido', 
+						parameters: {expand: 'Cliente,Estado'},
+						sorter: {
+								path: 'Fecha_Pedido',
+								descending: true
+								} 
+					}"
 				selectionMode="MultiToggle"
 				ariaLabelledBy="title">
 
