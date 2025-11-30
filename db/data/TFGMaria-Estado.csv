@@ -2,3 +2,5 @@ code,name,descr
 C,Creado,pedido Creado
 P,En proceso, pedido en proceso
 F,Finalizado,pedido finalizado
+D,Disponible,entrada disponible
+V,Vendido,entrada vendida

@@ -82,8 +82,12 @@ annotate service.Producto with @(
             $Type : 'UI.DataField',
             Value : Nombre,
         },
-        TypeName : '',
-        TypeNamePlural : '',
+        TypeName : 'Producto',
+        TypeNamePlural : 'Productos',
+        Description : {
+            $Type : 'UI.DataField',
+            Value : Familia.Family_Name,
+        },
     },
     UI.Facets : [
         {
@@ -98,62 +102,78 @@ annotate service.Producto with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Value : Familia_Family_Id,
-                Label : 'Familia_Family_Id',
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : Nombre,
                 Label : 'Nombre',
             },
             {
                 $Type : 'UI.DataField',
-                Value : Calibre.Calibre_Id,
-                Label : 'Calibre_Id',
+                Value : Familia_Id,
+                Label : 'Familia',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : Calibre.Id,
+                Label : 'Calibre',
             },
         ],
     },
 );
 
-annotate service.Calibre with @(
-    UI.LineItem #Calibre : [
-    ]
-);
+annotate service.Familias with {
+    Family_Id };
+
+annotate service.Calibre with {
+    Calibre_Id };
 
 annotate service.Producto with {
     Familia @(
+        Common.Text : Familia.Family_Name,
         Common.ValueList : {
             $Type : 'Common.ValueListType',
             CollectionPath : 'Familias',
             Parameters : [
                 {
                     $Type : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : Familia_Family_Id,
-                    ValueListProperty : 'Family_Id',
+                    LocalDataProperty : Familia_Id,
+                    ValueListProperty : 'Id',
                 },
             ],
         },
         Common.ValueListWithFixedValues : true,
-)};
-
-annotate service.Familias with {
-    Family_Id @Common.Text : Family_Name
+        Common.Text.@UI.TextArrangement : #TextOnly,
+    )
 };
 
+annotate service.Familias with {
+    Id @(
+        Common.Text : Family_Name,
+        Common.Text.@UI.TextArrangement : #TextOnly,
+)};
+
 annotate service.Calibre with {
-    Calibre_Id @(
+    Id @(
+        Common.Text : Nombre,
         Common.ValueList : {
             $Type : 'Common.ValueListType',
             CollectionPath : 'Calibre',
             Parameters : [
                 {
                     $Type : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : Calibre_Id,
-                    ValueListProperty : 'Calibre_Id',
+                    LocalDataProperty : Id,
+                    ValueListProperty : 'Id',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Nombre',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Peso_Aprox_Pieza',
                 },
             ],
         },
-        Common.ValueListWithFixedValues : true,
-        Common.Text : Nombre,
-)};
+        Common.ValueListWithFixedValues : false,
+        Common.Text.@UI.TextArrangement : #TextOnly,
+    )
+};
 

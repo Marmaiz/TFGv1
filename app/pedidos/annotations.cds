@@ -1,2 +1,2 @@
-using NuevoServicio as service from '../../srv/service';
+using PedidosService as service from '../../srv/service';
 

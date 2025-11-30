@@ -24,7 +24,9 @@
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
     "watch-cajas": "cds watch --open cajas/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-pedidos": "cds watch --open pedidos/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-pedidos": "cds watch --open pedidos/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-entradas": "cds watch --open entradas/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-socio": "cds watch --open socio/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "cds": {
@@ -43,6 +45,7 @@
   ],
   "sapux": [
     "app/familias",
-    "app/cajas"
+    "app/cajas",
+    "app/socio"
   ]
 }

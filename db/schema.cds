@@ -10,18 +10,18 @@ using {
 /***** Entidades de datos maestros ********/
 
 entity Familias {
-    key Id   : UUID;
+    key Id          : UUID;
         Family_Name : String(100);
 }
 
 entity Calibre {
-    key Id       : UUID;
+    key Id               : UUID;
         Nombre           : String(50);
         Peso_Aprox_Pieza : String(20);
 }
 
 entity Caja {
-    key Id  : UUID;
+    key Id       : UUID;
         Nombre   : String(50);
         Peso     : Integer;
         Calibre  : Association to Calibre;
@@ -37,7 +37,7 @@ entity Producto {
 }
 
 entity Pedido : managed {
-    key Id    : UUID;
+    key Id           : UUID;
         Cliente      : Association to Cliente;
         Fecha_Pedido : Date;
         Estado       : Association to Estado default 'C';
@@ -54,17 +54,48 @@ entity Pedido : managed {
 
 entity Estado : CodeList {
     key code : String enum {
-            Creado = 'C';
-            En_proceso = 'P';
-            Finalizado = 'F';
+            /* Esto para los pedidos*/
+    Creado = 'C';
+    En_proceso = 'P';
+    Finalizado = 'F';
 
-        };
+        /* Para las entradas*/
+    Vendido = 'V';
+    Disponible = 'D';
+    };
 }
 
 entity Cliente {
-    key Id : UUID;
-        Nombre     : String(50);
-        CIF        : String(10);
-        Direccion  : String(100);
-        Telefono   : String(10);
+    key Id        : UUID;
+        Nombre    : String(50);
+        CIF       : String(10);
+        Direccion : String(100);
+        Telefono  : String(10);
+}
+
+entity Entrada : managed {
+    key Id             : UUID;
+        Socio          : Association to Socio;
+        Fecha_recogida : Date;
+        Kilos          : Integer;
+        Calibre        : Association to Calibre;
+        Producto       : Association to Producto;
+        Estado         : Association to Estado default 'D';
+}
+
+entity EntradaParcial {
+    key Id          : UUID;
+
+        Linea       : Association to Pedido.Linea; // no se si es asi
+        Entrada     : Association to Entrada;
+
+        Kilos_Usados : Integer;   // <-- Kilos usados de esa entrada
+}
+
+entity Socio {
+    key Id        : UUID;
+        Nombre    : String(50);
+        CIF       : String(10);
+        Direccion : String(100);
+        Telefono  : String(10);
 }

@@ -1,41 +1,55 @@
-using { TFGMaria } from '../db/schema';
+using {TFGMaria} from '../db/schema';
 
 
-service MasterDataService  {
-  @odata.draft.enabled 
+service MasterDataService {
+  @odata.draft.enabled
   @fiori.draft.enabled
   entity Familias as projection on TFGMaria.Familias;
 
-  @odata.draft.enabled 
   @fiori.draft.enabled
-  entity Calibre as projection on TFGMaria.Calibre;
+  entity Calibre  as projection on TFGMaria.Calibre;
 
-  @odata.draft.enabled 
+  @odata.draft.enabled
   @fiori.draft.enabled
-  entity Caja as projection on TFGMaria.Caja;
+  entity Caja     as projection on TFGMaria.Caja;
 
-  @odata.draft.enabled 
+  @odata.draft.enabled
   @fiori.draft.enabled
   entity Producto as projection on TFGMaria.Producto;
+
+  @odata.draft.enabled
+  @fiori.draft.enabled
+  entity Socio    as projection on TFGMaria.Socio;
+
+  @odata.draft.enabled
+  @fiori.draft.enabled
+  entity Cliente  as projection on TFGMaria.Cliente;
 }
 
-service NuevoServicio {
-  
-  entity Pedido as projection on TFGMaria.Pedido;
+service PedidosService {
 
-  @odata.draft.enabled 
+  entity Pedido   as projection on TFGMaria.Pedido;
+
+  @odata.draft.enabled
   @fiori.draft.enabled
-  entity Cliente as projection on TFGMaria.Cliente;
+  entity Entrada  as projection on TFGMaria.Entrada;
 
-  @odata.draft.enabled 
+  @odata.draft.enabled
   @fiori.draft.enabled
-  entity Calibre as projection on TFGMaria.Calibre;
+  entity Cliente  as projection on TFGMaria.Cliente;
 
-  @odata.draft.enabled 
+  @odata.draft.enabled
   @fiori.draft.enabled
-  entity Caja as projection on TFGMaria.Caja;
+  entity Socio    as projection on TFGMaria.Socio;
 
-  @odata.draft.enabled 
+  @fiori.draft.enabled
+  entity Calibre  as projection on TFGMaria.Calibre;
+
+  @odata.draft.enabled
+  @fiori.draft.enabled
+  entity Caja     as projection on TFGMaria.Caja;
+
+  @odata.draft.enabled
   @fiori.draft.enabled
   entity Producto as projection on TFGMaria.Producto;
 

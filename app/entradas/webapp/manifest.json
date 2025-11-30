@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "pedidos",
+    "id": "entradas",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -12,8 +12,8 @@
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
-      "version": "1.19.3",
-      "toolsId": "7063105e-8e1f-49d8-bb92-7a76091b819a"
+      "version": "1.19.6",
+      "toolsId": "c169cf1a-156c-4b83-9979-7bde81763841"
     },
     "dataSources": {
       "mainService": {
@@ -22,20 +22,6 @@
         "settings": {
           "annotations": [],
           "odataVersion": "2.0"
-        }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "pedidos-display": {
-          "semanticObject": "pedidos",
-          "action": "display",
-          "title": "{{pedidos-display.flpTitle}}",
-          "subTitle": "{{pedidos-display.flpSubtitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
         }
       }
     }
@@ -59,7 +45,7 @@
   "sap.ui5": {
     "flexEnabled": false,
     "dependencies": {
-      "minUI5Version": "1.142.0",
+      "minUI5Version": "1.143.0",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {}
@@ -73,7 +59,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "pedidos.i18n.i18n"
+          "bundleName": "entradas.i18n.i18n"
         }
       },
       "": {
@@ -102,38 +88,28 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "path": "pedidos.view",
+        "path": "entradas.view",
         "async": true,
-        "viewPath": "pedidos.view"
+        "viewPath": "entradas.view"
       },
       "routes": [
         {
-          "name": "RoutePedidos",
+          "name": "RouteEntradas",
           "pattern": ":?query:",
           "target": [
-            "TargetPedidos"
-          ]
-        },
-        {
-          "name": "DetallePedido",
-          "pattern": "DetallePedido/{Id}",
-          "target": [
-            "DetallePedido"
+            "TargetEntradas"
           ]
         }
       ],
       "targets": {
-        "TargetPedidos": {
-          "id": "Pedidos",
-          "name": "Pedidos"
-        },
-         "DetallePedido": {
-          "name": "DetallePedido"
+        "TargetEntradas": {
+          "id": "Entradas",
+          "name": "Entradas"
         }
       }
     },
     "rootView": {
-      "viewName": "pedidos.view.App",
+      "viewName": "entradas.view.App",
       "type": "XML",
       "id": "App",
       "async": true

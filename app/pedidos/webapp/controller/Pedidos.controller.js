@@ -143,7 +143,7 @@ sap.ui.define([
 
             try {
                 // DELETE al backend CAP
-                await oModel.remove(sPath);
+                oModel.remove(sPath);
 
                 sap.m.MessageToast.show("Pedido eliminado.");
 
