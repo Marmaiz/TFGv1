@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "socio",
+    "id": "entrada",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,11 +13,11 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.19.6",
-      "toolsId": "8e743aaa-5d84-431a-b2ed-7651d58c28cf"
+      "toolsId": "107202f3-c68e-4307-8341-ce11febaebf6"
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/master-data/",
+        "uri": "/odata/v4/pedidos/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -27,11 +27,11 @@
     },
     "crossNavigation": {
       "inbounds": {
-        "socio-display": {
-          "semanticObject": "socio",
+        "entrada-display": {
+          "semanticObject": "entrada",
           "action": "display",
-          "title": "{{socio-display.flpTitle}}",
-          "subTitle": "{{socio-display.flpSubtitle}}",
+          "title": "{{entrada-display.flpTitle}}",
+          "subTitle": "{{entrada-display.flpSubtitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
@@ -74,7 +74,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "socio.i18n.i18n"
+          "bundleName": "entrada.i18n.i18n"
         }
       },
       "": {
@@ -99,28 +99,28 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "SocioList",
-          "target": "SocioList"
+          "name": "EntradaList",
+          "target": "EntradaList"
         },
         {
-          "pattern": "Socio({key}):?query:",
-          "name": "SocioObjectPage",
-          "target": "SocioObjectPage"
+          "pattern": "Entrada({key}):?query:",
+          "name": "EntradaObjectPage",
+          "target": "EntradaObjectPage"
         }
       ],
       "targets": {
-        "SocioList": {
+        "EntradaList": {
           "type": "Component",
-          "id": "SocioList",
+          "id": "EntradaList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Socio",
+              "contextPath": "/Entrada",
               "variantManagement": "Page",
               "navigation": {
-                "Socio": {
+                "Entrada": {
                   "detail": {
-                    "route": "SocioObjectPage"
+                    "route": "EntradaObjectPage"
                   }
                 }
               },
@@ -130,19 +130,18 @@
                     "type": "ResponsiveTable"
                   }
                 }
-              },
-              "initialLoad": "Enabled"
+              }
             }
           }
         },
-        "SocioObjectPage": {
+        "EntradaObjectPage": {
           "type": "Component",
-          "id": "SocioObjectPage",
+          "id": "EntradaObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Socio"
+              "contextPath": "/Entrada"
             }
           }
         }

@@ -26,6 +26,7 @@ service MasterDataService {
   entity Cliente  as projection on TFGMaria.Cliente;
 }
 
+
 service PedidosService {
 
   entity Pedido   as projection on TFGMaria.Pedido;

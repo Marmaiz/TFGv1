@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "socio",
+    "id": "calibre",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.19.6",
-      "toolsId": "8e743aaa-5d84-431a-b2ed-7651d58c28cf"
+      "toolsId": "fdd9751a-65ce-4eee-bc6c-21bcf205235b"
     },
     "dataSources": {
       "mainService": {
@@ -27,11 +27,11 @@
     },
     "crossNavigation": {
       "inbounds": {
-        "socio-display": {
-          "semanticObject": "socio",
+        "calibre-display": {
+          "semanticObject": "calibre",
           "action": "display",
-          "title": "{{socio-display.flpTitle}}",
-          "subTitle": "{{socio-display.flpSubtitle}}",
+          "title": "{{calibre-display.flpTitle}}",
+          "subTitle": "{{calibre-display.flpSubtitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
@@ -74,7 +74,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "socio.i18n.i18n"
+          "bundleName": "calibre.i18n.i18n"
         }
       },
       "": {
@@ -99,28 +99,28 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "SocioList",
-          "target": "SocioList"
+          "name": "CalibreList",
+          "target": "CalibreList"
         },
         {
-          "pattern": "Socio({key}):?query:",
-          "name": "SocioObjectPage",
-          "target": "SocioObjectPage"
+          "pattern": "Calibre({key}):?query:",
+          "name": "CalibreObjectPage",
+          "target": "CalibreObjectPage"
         }
       ],
       "targets": {
-        "SocioList": {
+        "CalibreList": {
           "type": "Component",
-          "id": "SocioList",
+          "id": "CalibreList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Socio",
+              "contextPath": "/Calibre",
               "variantManagement": "Page",
               "navigation": {
-                "Socio": {
+                "Calibre": {
                   "detail": {
-                    "route": "SocioObjectPage"
+                    "route": "CalibreObjectPage"
                   }
                 }
               },
@@ -135,14 +135,14 @@
             }
           }
         },
-        "SocioObjectPage": {
+        "CalibreObjectPage": {
           "type": "Component",
-          "id": "SocioObjectPage",
+          "id": "CalibreObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Socio"
+              "contextPath": "/Calibre"
             }
           }
         }

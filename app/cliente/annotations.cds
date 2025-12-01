@@ -1,5 +1,5 @@
 using MasterDataService as service from '../../srv/service';
-annotate service.Socio with @(
+annotate service.Cliente with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
         Data : [
@@ -62,22 +62,6 @@ annotate service.Socio with @(
         },
         TypeName : '',
         TypeNamePlural : '',
-        Description : {
-            $Type : 'UI.DataField',
-            Value : CIF,
-        },
     },
-    UI.SelectionFields : [
-        CIF,
-        Nombre,
-    ],
 );
-
-annotate service.Socio with {
-    CIF @Common.Label : 'CIF'
-};
-
-annotate service.Socio with {
-    Nombre @Common.Label : 'Nombre'
-};
 

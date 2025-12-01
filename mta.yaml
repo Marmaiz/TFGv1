@@ -90,6 +90,18 @@ modules:
       - socio.zip
       name: socio
       target-path: app/
+    - artifacts:
+      - cliente.zip
+      name: cliente
+      target-path: app/
+    - artifacts:
+      - calibre.zip
+      name: calibre
+      target-path: app/
+    - artifacts:
+      - entrada.zip
+      name: entrada
+      target-path: app/
 - name: TFGMaria-portal-deployer
   type: com.sap.application.content
   path: app/portal
@@ -149,6 +161,36 @@ modules:
 - name: socio
   type: html5
   path: app/socio
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: cliente
+  type: html5
+  path: app/cliente
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: calibre
+  type: html5
+  path: app/calibre
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: entrada
+  type: html5
+  path: app/entrada
   build-parameters:
     build-result: dist
     builder: custom

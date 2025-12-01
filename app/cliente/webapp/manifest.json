@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "socio",
+    "id": "cliente",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.19.6",
-      "toolsId": "8e743aaa-5d84-431a-b2ed-7651d58c28cf"
+      "toolsId": "579ab556-1e27-4bb5-b48b-aaf6b0710e78"
     },
     "dataSources": {
       "mainService": {
@@ -27,11 +27,11 @@
     },
     "crossNavigation": {
       "inbounds": {
-        "socio-display": {
-          "semanticObject": "socio",
+        "cliente-display": {
+          "semanticObject": "cliente",
           "action": "display",
-          "title": "{{socio-display.flpTitle}}",
-          "subTitle": "{{socio-display.flpSubtitle}}",
+          "title": "{{cliente-display.flpTitle}}",
+          "subTitle": "{{cliente-display.flpSubtitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
@@ -74,7 +74,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "socio.i18n.i18n"
+          "bundleName": "cliente.i18n.i18n"
         }
       },
       "": {
@@ -99,28 +99,28 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "SocioList",
-          "target": "SocioList"
+          "name": "ClienteList",
+          "target": "ClienteList"
         },
         {
-          "pattern": "Socio({key}):?query:",
-          "name": "SocioObjectPage",
-          "target": "SocioObjectPage"
+          "pattern": "Cliente({key}):?query:",
+          "name": "ClienteObjectPage",
+          "target": "ClienteObjectPage"
         }
       ],
       "targets": {
-        "SocioList": {
+        "ClienteList": {
           "type": "Component",
-          "id": "SocioList",
+          "id": "ClienteList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Socio",
+              "contextPath": "/Cliente",
               "variantManagement": "Page",
               "navigation": {
-                "Socio": {
+                "Cliente": {
                   "detail": {
-                    "route": "SocioObjectPage"
+                    "route": "ClienteObjectPage"
                   }
                 }
               },
@@ -130,19 +130,18 @@
                     "type": "ResponsiveTable"
                   }
                 }
-              },
-              "initialLoad": "Enabled"
+              }
             }
           }
         },
-        "SocioObjectPage": {
+        "ClienteObjectPage": {
           "type": "Component",
-          "id": "SocioObjectPage",
+          "id": "ClienteObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Socio"
+              "contextPath": "/Cliente"
             }
           }
         }
