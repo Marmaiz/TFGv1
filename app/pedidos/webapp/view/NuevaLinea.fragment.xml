@@ -33,6 +33,14 @@
                 <core:Item key="{Id}" text="{Nombre}" />
             </ComboBox>
 
+<!--             <Label text="Entrada"/>
+            <ComboBox
+                items="{ path: '/Entrada' }"
+                selectedKey="{NuevaLineaModel>/Entrada_Id}"
+                width="100%">
+                <core:Item key="{Id}" text="{Id}" />
+            </ComboBox> -->
+
             <Label text="Kilos"/>
             <Input value="{NuevaLineaModel>/Kilos}" type="Number"/>
 

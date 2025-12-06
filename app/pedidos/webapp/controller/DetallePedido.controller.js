@@ -20,9 +20,11 @@ sap.ui.define([
       oView.bindElement({
         //path: `/Pedido(Id=guid'${oArgs.Id}',IsActiveEntity=true)`,
         path: `/Pedido(Id=guid'${oArgs.Id}')`,
-        parameters: {
-          expand: "Linea"
-        }
+
+        
+        /*  parameters: {
+          expand: "Lineas"
+        } */ 
       })
     },
 
@@ -42,13 +44,20 @@ sap.ui.define([
               oView.addDependent(this._oDialogNuevaLinea);
             } */
 
-      // Crear estructura vacía
+//PARA OBTENER EL PEDIDO_ID
+  // Obtener el Pedido actual desde el ElementBinding 
+  const oPedido = oView.getElementBinding().getBoundContext().getObject();
+  const pedidoId = oPedido.Id;   
+
+      // Crear estructura vacía 
       var newEntry = {        
         Producto_Id: "",
         Calibre_Id: "",
         Caja_Id: "",
+        Pedido_Id: pedidoId,
         Kilos: 0,
-        Precio: 0
+        Precio: 0,
+        /* Entrada_Id: "",  Id,Producto_Id,Calibre_Id,Caja_Id,Pedido_Id,Kilos,Precio */
       };
 
       if (!this._oDialogNuevaLinea) {
@@ -86,21 +95,22 @@ sap.ui.define([
       console.log(oData);
 
       // Obtenemos el path del Pedido actual
-      const binding = oView.getElementBinding();
-      const pedidoPath = binding.getPath();  // "/Pedido(Id=guid'...')"
+        //const binding = oView.getElementBinding();
+        // const pedidoPath = binding.getPath();  // "/Pedido(Id=guid'...')"
 
       // Path para crear la línea (sub-collection)
-      const lineaPath = pedidoPath + "/Linea";      
+        //const lineaPath = pedidoPath + "/Linea";      
       const that = this;     
 
-      oModel.create(lineaPath, oData, {
-        success: function () {
+      //oModel.create(lineaPath, oData, {
+      oModel.create("/Linea", oData, {
+        success: function (oCreatedData) {
           MessageToast.show("Línea creada correctamente");
-
           that._oDialogNuevaLinea.close();
 
           // Refrescar los datos del Pedido entero
-          binding.refresh(true);
+          //binding.refresh(true);
+          oModel.refresh(true);
         },
         error: function (oError) {
           console.error("Error al crear línea", oError);

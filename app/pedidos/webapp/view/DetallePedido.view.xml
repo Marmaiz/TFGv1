@@ -79,7 +79,7 @@
 
 		<VBox>
 			<t:Table id="itemsTable"
-			rows="{ path: 'Linea', parameters: {expand: 'Caja, Calibre, Producto'}}"
+			rows="{ path: 'Lineas', parameters: {expand: 'Caja, Calibre, Producto'}}" 
 				selectionMode="MultiToggle"
 				ariaLabelledBy="title">
 		
@@ -130,13 +130,6 @@
 								<Text text="{Kilos}" wrapping="false"/>								
 							</t:template>
 						</t:Column>	
-						
-						<t:Column>
-							<Label text="Kilos" />
-							<t:template>
-								<Input value="{Kilos}" editable="false" />								
-							</t:template>
-						</t:Column>	
 
 						<t:Column>
 							<Label text="Precio" />
@@ -144,6 +137,14 @@
 								<Text text="{Precio}" wrapping="false"/>
 							</t:template>
 						</t:Column>	
+
+						<t:Column>
+							<Label text="Entradas" />
+							<t:template>
+								<Input value="{Entradas}" editable="false" />								
+							</t:template>
+						</t:Column>	
+
 					</t:columns>
 
 			

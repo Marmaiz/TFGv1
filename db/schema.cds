@@ -41,16 +41,45 @@ entity Pedido : managed {
         Cliente      : Association to Cliente;
         Fecha_Pedido : Date;
         Estado       : Association to Estado default 'C';
-        Linea        : Composition of many {
-                           key Id       : UUID;
-                               Producto : Association to Producto;
-                               Calibre  : Association to Calibre;
-                               Caja     : Association to Caja;
-                               Kilos    : Integer;
-                               Precio   : Integer;
-                       }
+        Lineas       : Composition of many Linea
+                           on Lineas.Pedido = $self;   
 }
 
+entity Linea : managed {
+    key Id         : UUID;
+        Producto   : Association to Producto;
+        Calibre    : Association to Calibre;
+        Caja       : Association to Caja;
+        Pedido     : Association to Pedido;
+        Kilos      : Integer;
+        Precio     : Integer;
+        toEntradas : Association to many EntradaParcial
+                         on toEntradas.Linea = $self;
+/*                                Entrada  : Association to many Entrada
+                                              on Entrada.Id; */
+/* Entrada : Association to many Entrada; */
+}
+
+entity Entrada : managed {
+    key Id             : UUID;
+        Socio          : Association to Socio;
+        Fecha_recogida : Date;
+        Kilos          : Integer;
+        Calibre        : Association to Calibre;
+        Producto       : Association to Producto;
+        Estado         : Association to Estado default 'D';
+        toLineas       : Association to many EntradaParcial
+                             on toLineas.Entrada = $self;
+}
+
+entity EntradaParcial {
+    key Id           : UUID;
+
+        Linea        : Association to Linea; // no se si es asi
+        Entrada      : Association to Entrada;
+
+        Kilos_Usados : Integer; // <-- Kilos usados de esa entrada
+}
 
 entity Estado : CodeList {
     key code : String enum {
@@ -71,25 +100,6 @@ entity Cliente {
         CIF       : String(10);
         Direccion : String(100);
         Telefono  : String(10);
-}
-
-entity Entrada : managed {
-    key Id             : UUID;
-        Socio          : Association to Socio;
-        Fecha_recogida : Date;
-        Kilos          : Integer;
-        Calibre        : Association to Calibre;
-        Producto       : Association to Producto;
-        Estado         : Association to Estado default 'D';
-}
-
-entity EntradaParcial {
-    key Id          : UUID;
-
-        Linea       : Association to Pedido.Linea; // no se si es asi
-        Entrada     : Association to Entrada;
-
-        Kilos_Usados : Integer;   // <-- Kilos usados de esa entrada
 }
 
 entity Socio {

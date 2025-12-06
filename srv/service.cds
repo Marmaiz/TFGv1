@@ -26,7 +26,7 @@ service MasterDataService {
   entity Cliente  as projection on TFGMaria.Cliente;
 }
 
-
+@impl:'./service.js'
 service PedidosService {
 
   entity Pedido   as projection on TFGMaria.Pedido;
@@ -34,6 +34,11 @@ service PedidosService {
   @odata.draft.enabled
   @fiori.draft.enabled
   entity Entrada  as projection on TFGMaria.Entrada;
+
+  entity Linea  as projection on TFGMaria.Linea;
+  @odata.draft.enabled
+  @fiori.draft.enabled
+  entity EntradaParcial  as projection on TFGMaria.EntradaParcial;
 
   @odata.draft.enabled
   @fiori.draft.enabled
