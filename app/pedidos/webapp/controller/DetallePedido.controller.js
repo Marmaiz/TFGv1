@@ -127,6 +127,46 @@ sap.ui.define([
     },
 
 /**
+ * Metodo para eliminar una nueva linea
+ */    onEliminarLinea: function () {
+
+            const oTable = this.byId("tablaLineas");
+            const aSelectedIndices = oTable.getSelectedIndices();
+
+            if (aSelectedIndices.length === 0) {
+                MessageToast.show("Seleccione una linea para eliminar.");
+                return;
+            }
+
+            // Solo permitimos eliminar 1 pedido a la vez
+            const iIndex = aSelectedIndices[0];
+
+            // Obtener el contexto de la fila seleccionada
+            const oContext = oTable.getContextByIndex(iIndex);
+            const sPath = oContext.getPath();     // "/Pedido(key...)"
+
+            const oModel = this.getView().getModel();
+
+            // Confirmación
+            const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
+            if (!bConfirm) return;
+
+            try {
+                // DELETE al backend CAP
+                oModel.remove(sPath);
+
+                MessageToast.show("Linea eliminada.");
+
+                // Actualizar la tabla
+                oModel.refresh(true);
+
+            } catch (err) {
+                console.error(err);
+                MessageToast.show("Error al eliminar linea.");
+            }
+        },
+
+/**
  * Metodo para poder editar el pedido
  */
     onHacerEditable: function () {

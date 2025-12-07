@@ -78,7 +78,8 @@
 		
 
 		<VBox>
-			<t:Table id="itemsTable"
+			<t:Table 
+			id="tablaLineas"
 			rows="{ path: 'Lineas', parameters: {expand: 'Caja, Calibre, Producto'}}" 
 				selectionMode="MultiToggle"
 				ariaLabelledBy="title">
