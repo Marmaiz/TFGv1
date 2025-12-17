@@ -120,6 +120,20 @@
           "target": [
             "DetallePedido"
           ]
+        },
+        {
+          "name": "ListadoPedidosPorProcesar",
+          "pattern": "ListadoPedidosPorProcesar",
+          "target": [
+            "ListadoPedidosPorProcesar"
+          ]
+        },
+        {
+          "name": "ProcesarPedido",
+          "pattern": "ProcesarPedido/{Id}",
+          "target": [
+            "ProcesarPedido"
+          ]
         }
       ],
       "targets": {
@@ -129,6 +143,12 @@
         },
          "DetallePedido": {
           "name": "DetallePedido"
+        },
+         "ProcesarPedido": {
+          "name": "ProcesarPedido"
+        },
+          "ListadoPedidosPorProcesar": {
+          "name": "ListadoPedidosPorProcesar"
         }
       }
     },

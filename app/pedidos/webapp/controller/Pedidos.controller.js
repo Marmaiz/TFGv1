@@ -169,6 +169,14 @@ sap.ui.define([
             );
         },
 
+        onProcesarPedidos: function () {
+            MessageToast.show("Procesando pedidos...");
+            let oRouter = UIComponent.getRouterFor(this);
+            oRouter.navTo("ListadoPedidosPorProcesar",
+                {  }
+            );
+        },
+
         onPress: function (evt) {
             MessageToast.show(evt.getSource().getId() + " Pressed");
         }

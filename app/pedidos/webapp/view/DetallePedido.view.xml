@@ -152,6 +152,6 @@
 			</t:Table>	
 		</VBox>			
 
-	</VBox>
+	</VBox> 
 
 </mvc:View>

@@ -65,6 +65,7 @@ entity Entrada : managed {
         Socio          : Association to Socio;
         Fecha_recogida : Date;
         Kilos          : Integer;
+        Kilos_restantes          : Integer;/*para probar*/ 
         Calibre        : Association to Calibre;
         Producto       : Association to Producto;
         Estado         : Association to Estado default 'D';

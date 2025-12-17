@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="pedidos.controller.Pedidos"
+    controllerName="pedidos.controller.ListadoPedidosPorProcesar"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:p="sap.m.plugins"
@@ -8,35 +8,20 @@
     xmlns:c="sap.ui.core"
 >
     <Page
-        id="pagePedidos"
+        id="pageListadoPedidosPorProcesar"
         title="{i18n>title}"
     >
         <content>
-            <Toolbar>
-                <ToolbarSpacer />
-                    <Button
-                        id="btnCrearPed"
-                        text="Crear nuevo pedido"
-                        press="onCrearPedido"
-                    />
-                    <Button
-                        id="btnborrarPed"
-                        type="Reject"
-                        text="Eliminar"
-                        press="onEliminarPedido"
-                    />
-                    <Button
-                        id="btnProcPed"
-                        text="Procesar"
-                        press="onProcesarPedidos"
-                    />
-                <ToolbarSpacer />
-            </Toolbar>
 
             <t:Table
-                id="tablaPedidos"
+                id="tablaPedidosPorProcesar"
                 rows="{ path: '/Pedido', 
 						parameters: {expand: 'Cliente,Estado'},
+                        filters: [{
+                                    path: 'Estado_code',
+                                    operator: 'EQ',
+                                    value1: 'P'
+                                }],
 						sorter: {
 								path: 'Fecha_Pedido',
 								descending: true
@@ -91,14 +76,13 @@
                     </t:Column>
 
                     <t:Column>
-                        <Label text="Mas info" />
+                        <Label text="Acciones" />
                         <t:template>
-                            <t:RowAction>
-                                <t:RowActionItem
-                                    type="Navigation"
-                                    press="onDetail"
-                                />
-                            </t:RowAction>
+                            <Button
+                                text="Gestionar Pedido"
+                                icon="sap-icon://navigation-right-arrow"
+                                press="onGestionar"
+                            />
                         </t:template>
                     </t:Column>
                 </t:columns>

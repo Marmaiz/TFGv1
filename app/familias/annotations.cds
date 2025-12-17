@@ -120,10 +120,10 @@ annotate service.Producto with @(
 );
 
 annotate service.Familias with {
-    Family_Id };
+    Id };
 
 annotate service.Calibre with {
-    Calibre_Id };
+    Id };
 
 annotate service.Producto with {
     Familia @(
