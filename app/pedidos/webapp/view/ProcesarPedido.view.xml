@@ -53,7 +53,7 @@
 						<u:ObjectPageSubSection titleUppercase="false">
 							<t:Table 
 								rows="{ path: 'Lineas', parameters: {expand: 'Caja, Calibre, Producto'}}" 
-									selectionMode="MultiToggle"
+									selectionMode="None"
 									ariaLabelledBy="title">
 
 									<t:columns>
@@ -112,7 +112,11 @@
 										<t:Column>
 											<Label text="Entradas" />
 											<t:template>
-												<Input value="{Entradas}" editable="false" />								
+												<Button
+													text="Añadir entrada"
+													icon="sap-icon://navigation-right-arrow"
+													press="onAsignarEntrada"
+												/>							
 											</t:template>
 										</t:Column>	
 

@@ -36,9 +36,8 @@ service PedidosService {
   entity Entrada  as projection on TFGMaria.Entrada;
 
   entity Linea  as projection on TFGMaria.Linea;
-  @odata.draft.enabled
-  @fiori.draft.enabled
-  entity EntradaParcial  as projection on TFGMaria.EntradaParcial;
+ 
+  entity Trazabilidad  as projection on TFGMaria.Trazabilidad;
 
   @odata.draft.enabled
   @fiori.draft.enabled

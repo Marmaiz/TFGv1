@@ -42,7 +42,7 @@ entity Pedido : managed {
         Fecha_Pedido : Date;
         Estado       : Association to Estado default 'C';
         Lineas       : Composition of many Linea
-                           on Lineas.Pedido = $self;   
+                           on Lineas.Pedido = $self;
 }
 
 entity Linea : managed {
@@ -53,7 +53,7 @@ entity Linea : managed {
         Pedido     : Association to Pedido;
         Kilos      : Integer;
         Precio     : Integer;
-        toEntradas : Association to many EntradaParcial
+        toEntradas : Association to many Trazabilidad
                          on toEntradas.Linea = $self;
 /*                                Entrada  : Association to many Entrada
                                               on Entrada.Id; */
@@ -61,19 +61,20 @@ entity Linea : managed {
 }
 
 entity Entrada : managed {
-    key Id             : UUID;
-        Socio          : Association to Socio;
-        Fecha_recogida : Date;
-        Kilos          : Integer;
-        Kilos_restantes          : Integer;/*para probar*/ 
-        Calibre        : Association to Calibre;
-        Producto       : Association to Producto;
-        Estado         : Association to Estado default 'D';
-        toLineas       : Association to many EntradaParcial
-                             on toLineas.Entrada = $self;
+    key Id                : UUID;
+        Socio             : Association to Socio;
+        Fecha_recogida    : Date;
+        Kilos             : Integer not null;
+        Kilos_disponibles : Integer;                /*para probar*/
+        Kilos_Merma       : Integer default 0;      /*para probar*/
+        Calibre           : Association to Calibre;
+        Producto          : Association to Producto;
+        Estado            : Association to Estado default 'D';
+        toLineas          : Association to many Trazabilidad
+                                on toLineas.Entrada = $self;
 }
 
-entity EntradaParcial {
+entity Trazabilidad {
     key Id           : UUID;
 
         Linea        : Association to Linea; // no se si es asi

@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+		xmlns="sap.ui.comp.valuehelpdialog"
+		xmlns:m="sap.m"
+		xmlns:fb="sap.ui.comp.filterbar"
+		xmlns:core="sap.ui.core">
+	<ValueHelpDialog
+			title="{i18n>Entradas}"
+			ok=".onValueHelpWithSuggestionsOkPress"
+			cancel=".onValueHelpWithSuggestionsCancelPress"
+			afterClose=".onValueHelpWithSuggestionsAfterClose"
+			supportRanges="true"
+			key="Vendor_Id"
+			descriptionKey="Vendor_Name">
+		<filterBar>
+			<fb:FilterBar advancedMode="true" search=".onFilterBarWithSuggestionsSearch" isRunningInValueHelpDialog="true">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="Vendor_Id"
+							label="{i18n>lesson_supplier}"
+							visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="Vendor_Id"
+									 showSuggestion="true"
+									 showValueHelp="false"
+									 >
+								<core:Item key="{Vendor_Id}" text="{Vendor_Id}" />
+							</m:Input>
+						</fb:control>
+					</fb:FilterGroupItem>
+				 	<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="Name"
+							label="{i18n>name}"
+							visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="Vendor_Name"
+									 showSuggestion="true"
+									 showValueHelp="false"
+									 >
+								<core:Item key="{Vendor_Name}" text="{Vendor_Name}" />
+							</m:Input>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>
