@@ -25,30 +25,42 @@ module.exports = srv => {
 
     });
 
+    /**
+     * codigo a ejecutar antes (BEFORE) de crear un registro en Trazabilidad
+     */
     srv.before('CREATE', 'Trazabilidad', async (req) => {
 
+        /*Extraigo de req.data que contiene los datos que el cliente está intentando crear, el ID y los kilos*/
         var Entrada_Id = req.data.Entrada_Id;
         var Kilos_Usados = req.data.Kilos_Usados;
 
-        if ( !Entrada_Id || !Kilos_Usados) return;
+        /*Detengo la ejecucion si no existen los datos*/
+        if (!Entrada_Id || !Kilos_Usados) return;
 
+        /*Creo una variable que almacene la transaccion ligada al request
+            Todo lo que se ejecute con tx.run():
+                Se confirma (commit) si todo sale bien
+                Se revierte (rollback) si ocurre un error */
         const tx = cds.tx(req);
 
         const entrada = await tx.run(
-            SELECT.one.from(Entrada).where({
-                Id: Entrada_Id })
+            /* SELECT.one.from(Entrada).where({ Id: Entrada_Id }) */
+            SELECT.from(Entrada, Entrada_Id)
         );
 
+        /*Validar que la Entrada exista*/
         if (!entrada) {
             req.error(404, 'Entrada no encontrada');
             return;
         }
-
+        /*Validar kilos disponibles*/
         if (entrada.Kilos_disponibles < Kilos_Usados) {
             req.error(400, 'No hay kilos disponibles suficientes');
             return;
         }
-
+        
+        /*Actualizar kilos disponibles en la Entrada, dentro de la misma transacción (tx)
+        garantizando que si falla la creación de Trazabilidad, no se descuentan los kilos*/
         await tx.run(
             UPDATE(Entrada)
                 .set({
@@ -57,6 +69,45 @@ module.exports = srv => {
                 .where({ Id: Entrada_Id })
         );
     });
+
+
+    /**finalizar pedido */
+    srv.before('UPDATE', 'Pedido', async (req) => {
+
+        if (!req.data.Estado_code) return;
+
+        const tx = cds.tx(req);
+
+        const pedido = await tx.run(
+            SELECT.one.from('Pedido').where({ Id: req.data.Id })
+            
+        );
+
+        if (!pedido) {
+            req.error(404, 'Pedido no encontrado');
+            return;
+        }
+
+        if (pedido.Estado_code === 'F') {
+            req.error(400, 'El pedido ya está finalizado');
+            return;
+        }
+
+        // (Opcional) Validar trazabilidad
+        const trazas = await tx.run(
+            SELECT.from('Trazabilidad')
+                .where({ 'Linea.Pedido_Id': pedido.Id })
+        );
+
+        if (!trazas.length) {
+            req.error(400, 'El pedido no tiene trazabilidad');
+            return;
+        }
+
+    });
+
+
+
 
 
 };

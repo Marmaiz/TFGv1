@@ -11,10 +11,7 @@
         cancel="onCancelarEntrada"
         items="{
             path: '/Entrada',
-            parameters: {expand: 'Socio, Producto'},
-            filters: [
-                { path: 'Kilos_disponibles', operator: 'GT', value1: 0 }
-            ]
+            parameters: {expand: 'Socio, Producto'}
         }">
 
 		<columns>

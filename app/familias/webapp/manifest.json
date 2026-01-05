@@ -103,14 +103,14 @@
           "target": "FamiliasList"
         },
         {
-          "pattern": "Familias({key}):?query:",
-          "name": "FamiliasObjectPage",
-          "target": "FamiliasObjectPage"
-        },
-        {
           "name": "ProductoObjectPage",
           "pattern": "Producto({ProductoKey}):?query:",
           "target": "ProductoObjectPage"
+        },
+        {
+          "name": "FamiliasObjectPage",
+          "pattern": "Familias({FamiliasKey}):?query:",
+          "target": "FamiliasObjectPage"
         }
       ],
       "targets": {
@@ -123,21 +123,24 @@
               "contextPath": "/Familias",
               "variantManagement": "Page",
               "navigation": {
-                "Familias": {
-                  "detail": {
-                    "route": "FamiliasObjectPage"
-                  }
-                },
                 "Producto": {
                   "detail": {
                     "route": "ProductoObjectPage"
+                  }
+                },
+                "Familias": {
+                  "detail": {
+                    "route": "FamiliasObjectPage"
                   }
                 }
               },
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable"
+                    "type": "ResponsiveTable",
+                    "creationMode": {
+                      "name": "NewPage"
+                    }
                   }
                 }
               },
@@ -158,17 +161,6 @@
             }
           }
         },
-        "FamiliasObjectPage": {
-          "type": "Component",
-          "id": "FamiliasObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Familias"
-            }
-          }
-        },
         "ProductoObjectPage": {
           "type": "Component",
           "id": "ProductoObjectPage",
@@ -180,6 +172,17 @@
               "editableHeaderContent": false
             }
           }
+        },
+        "FamiliasObjectPage": {
+          "type": "Component",
+          "id": "FamiliasObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "navigation": {},
+              "contextPath": "/Familias"
+            }
+          }
         }
       }
     }
@@ -188,5 +191,12 @@
     "registrationIds": [],
     "archeType": "transactional"
   },
-  "": {}
+  "": {},
+  "sap.fe": {
+    "macros": {
+      "table": {
+        "defaultCreationMode": "InlineCreationRows"
+      }
+    }
+  }
 }

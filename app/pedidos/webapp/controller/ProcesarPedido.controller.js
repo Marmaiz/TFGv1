@@ -75,7 +75,6 @@ sap.ui.define([
     },
 
     onConfirmarEntrada: function (oEvent) {
-
       const oItem = oEvent.getParameter("selectedItem");
       const oCtx = oItem.getBindingContext();
       const oEntrada = oCtx.getObject();
@@ -83,7 +82,7 @@ sap.ui.define([
       const oNuevaEntradaModel = this.getView().getModel("NuevaEntradaModel");
       const oData = oNuevaEntradaModel.getData();
 
-      // 🔑 ASIGNAR Entrada_Id
+      // ASIGNAR Entrada_Id
       oData.Entrada_Id = oEntrada.Id;
 
       /*     if (!oData.Kilos_Usados || oData.Kilos_Usados <= 0) {
@@ -111,6 +110,7 @@ sap.ui.define([
       var oView = this.getView();
       // Guardamos el id de la línea seleccionada
       var oLinea = oEvent.getSource().getBindingContext().getObject();
+      this._oLineaSeleccionada = oLinea; // Se guarda la línea en una Vglobal para poder utilizarla en la ayuda de busqueda
       //Se genera la nueva entrada para el formulario
       var newEntry = {
         Linea_Id: oLinea.Id,
@@ -136,7 +136,7 @@ sap.ui.define([
       this.getView().setModel(oModelAsignarEntrada, "AsignarEntradaModel");
     },
 
-    onConfirmAsignarEntrada: function (oEvent) {      
+    onConfirmAsignarEntrada: function (oEvent) {
 
       var oModelAsignarEntrada = this.getView().getModel("AsignarEntradaModel");
       var oDataAsignarEntrada = oModelAsignarEntrada.getData();
@@ -166,8 +166,23 @@ sap.ui.define([
       oEvent.getSource().getParent().close();
     },
 
-    onValueHelpPress: function () {
+
+    //Método que llama a la ayuda de busqueda de entradas disponibles
+    onValueHelpPress: function (oEvent) {
       var oView = this.getView();
+
+
+      if (!this._oLineaSeleccionada) {
+        MessageBox.error("No se ha seleccionado ninguna línea");
+        return;
+      }
+
+      var oProductoId = this._oLineaSeleccionada.Producto_Id;
+
+      if (!oProductoId) {
+        MessageBox.error("La línea no tiene producto");
+        return;
+      }
 
       if (!this._oDialogNuevaEntrada) {
         this._oDialogNuevaEntrada = sap.ui.xmlfragment(
@@ -176,12 +191,30 @@ sap.ui.define([
         );
         oView.addDependent(this._oDialogNuevaEntrada);
       }
+
+      // Esperar a que el binding exista
+      var oBinding = this._oDialogNuevaEntrada.getBinding("items");
+
+      if (oBinding) {
+        const aFilters = [
+          new sap.ui.model.Filter(
+            "Kilos_disponibles",
+            sap.ui.model.FilterOperator.GT,
+            0
+          ),
+          new sap.ui.model.Filter(
+            "Producto_Id",
+            sap.ui.model.FilterOperator.EQ,
+            oProductoId
+          )
+        ];
+        oBinding.filter(aFilters);
+      }
       this._oDialogNuevaEntrada.open();
 
     },
 
     onSelectEntrada: function (oEvent) {
-
       var oModelAsignarEntrada = this.getView().getModel("AsignarEntradaModel");
       const oEntrada = oEvent.getParameter("selectedItem").getBindingContext().getObject();
 
@@ -224,9 +257,46 @@ sap.ui.define([
           that._oDialogAsignarEntrada.setBusy(false);
         }
       });
-    }
+    },
 
+    onfinalizarPedido: function () {
+      const oView = this.getView();
+      const oModel = oView.getModel();
+      const oCtx = oView.getBindingContext();
+      const oRouter = UIComponent.getRouterFor(this);
 
+      const sPedidoId = oCtx.getProperty("Id");
+
+      MessageBox.confirm("¿Deseas finalizar el pedido?", {
+        onClose: function (oAction) {
+
+          if (oAction !== MessageBox.Action.OK) {
+            return;
+          }
+
+          oView.setBusy(true);
+
+          oModel.update(
+            `/Pedido(Id=guid'${sPedidoId}')`,
+            { Estado_code: 'F' },
+            {
+              success: function () {
+                oView.setBusy(false);
+                MessageToast.show("Pedido finalizado");
+                oModel.refresh(true, true);
+
+                oRouter.navTo("ListadoPedidosPorProcesar");
+              },
+              error: function (oError) {
+                oView.setBusy(false);
+                const err = JSON.parse(oError.responseText);
+                MessageBox.error(err.error.message.value);
+              }
+            }
+          );
+        }
+      });
+    },
 
 
 

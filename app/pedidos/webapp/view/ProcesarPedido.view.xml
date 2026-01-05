@@ -25,7 +25,7 @@
            		</u:heading>
 
 					<u:actions>
-						<Button text="Finalizar" type="Emphasized"/>
+						<Button text="Finalizar" type="Emphasized" press="onfinalizarPedido"/>
 						<OverflowToolbarButton icon="sap-icon://action" type="Transparent" text="Share" tooltip="action"/>
 					</u:actions>
 
@@ -55,15 +55,6 @@
 								rows="{ path: 'Lineas', parameters: {expand: 'Caja, Calibre, Producto'}}" 
 									selectionMode="None"
 									ariaLabelledBy="title">
-
-									<t:columns>
-										<t:Column><Text text="Id"/></t:Column>
-										<t:Column><Text text="Producto"/></t:Column>
-										<t:Column><Text text="Caja"/></t:Column>
-										<t:Column><Text text="Calibre"/></t:Column>
-										<t:Column><Text text="Kilos"/></t:Column>
-										<t:Column><Text text="Precio"/></t:Column>
-									</t:columns>
 
 									<t:columns>
 									
@@ -130,7 +121,46 @@
 				<u:ObjectPageSection titleUppercase="false" title="Trazabilidad">
 					<u:subSections>
 						<u:ObjectPageSubSection titleUppercase="false">
-							<Text text="aqui va la tabla de entradas"></Text>
+							<t:Table 
+								rows="{ path: '/Trazabilidad', parameters: {expand: 'Linea,Entrada($expand=Socio)'}}" 
+									selectionMode="None"
+									ariaLabelledBy="title">
+
+
+									<t:columns>
+									
+										<t:Column>
+											<Label text="Linea" />
+											<t:template>
+												<Text text="{Linea/Id}" wrapping="false"/>
+											</t:template>
+										</t:Column>	
+
+										<t:Column>
+											<Label text="Entrada" />
+											<t:template>
+												<Text text="{Entrada/Id}" wrapping="false"/>
+											</t:template>
+										</t:Column>	
+
+										<t:Column>
+											<Label text="Socio" />
+											<t:template>
+												<Text text="{Entrada/Socio/Nombre}" wrapping="false"/>
+											</t:template>
+										</t:Column>	
+
+										<t:Column>
+											<Label text="Kilos" />
+											<t:template>
+												<Text text="{Kilos_Usados}" wrapping="false"/>								
+											</t:template>
+										</t:Column>	
+
+									</t:columns>
+							
+							</t:Table>
+
 						</u:ObjectPageSubSection>
 					</u:subSections>
 				</u:ObjectPageSection>

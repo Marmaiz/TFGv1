@@ -75,7 +75,7 @@ annotate service.Producto with @(
             SelectOptions : [
             ],
         },
-        Text : 'Table View Producto',
+        Text : 'Producto',
     },
     UI.HeaderInfo : {
         Title : {
