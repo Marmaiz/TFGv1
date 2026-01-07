@@ -3,10 +3,10 @@ const cds = require('@sap/cds');
 const { Entrada } = cds.entities;
 
 module.exports = srv => {
-    srv.before('CREATE', 'Pedido', (req) => {
-
-        req.data.Estado_code = 'P';   // prueba para cambiar el estado al crear un pedido
-    });
+    /*     srv.before('CREATE', 'Pedido', (req) => {
+    
+            req.data.Estado_code = 'P';   // prueba para cambiar el estado al crear un pedido
+        }); */
 
 
     srv.before('CREATE', 'Linea', (linea) => {
@@ -33,6 +33,7 @@ module.exports = srv => {
         /*Extraigo de req.data que contiene los datos que el cliente está intentando crear, el ID y los kilos*/
         var Entrada_Id = req.data.Entrada_Id;
         var Kilos_Usados = req.data.Kilos_Usados;
+        var Linea_Id = req.data.Linea_Id;
 
         /*Detengo la ejecucion si no existen los datos*/
         if (!Entrada_Id || !Kilos_Usados) return;
@@ -48,6 +49,10 @@ module.exports = srv => {
             SELECT.from(Entrada, Entrada_Id)
         );
 
+        const linea = await tx.run(
+            SELECT.one.from('Linea').where({ Id: Linea_Id })
+        );
+
         /*Validar que la Entrada exista*/
         if (!entrada) {
             req.error(404, 'Entrada no encontrada');
@@ -58,7 +63,32 @@ module.exports = srv => {
             req.error(400, 'No hay kilos disponibles suficientes');
             return;
         }
-        
+
+        /*Validar que la linea exista*/
+        if (!linea) {
+            req.error(404, 'Línea no encontrada');
+            return;
+        }
+
+        /* Calcular kilos ya usados en la línea */
+        const result = await tx.run(
+            SELECT.one
+                .from('Trazabilidad')
+                .columns`sum(Kilos_Usados) as total`
+                .where({ Linea_Id })
+        );
+
+        const kilosUsadosLinea = result?.total || 0;
+
+        /* Validar que no se superen los kilos de la línea */
+        if (kilosUsadosLinea + Kilos_Usados > linea.Kilos) {
+            req.error(
+                400,
+                `Se superan los kilos de la línea. Kilos faltantes: ${linea.Kilos - kilosUsadosLinea}`
+            );
+            return;
+        }
+
         /*Actualizar kilos disponibles en la Entrada, dentro de la misma transacción (tx)
         garantizando que si falla la creación de Trazabilidad, no se descuentan los kilos*/
         await tx.run(
@@ -80,7 +110,12 @@ module.exports = srv => {
 
         const pedido = await tx.run(
             SELECT.one.from('Pedido').where({ Id: req.data.Id })
-            
+
+        );
+
+        // Líneas del pedido
+        const lineas = await tx.run(
+            SELECT.from('Linea').where({ Pedido_Id: pedido.Id })
         );
 
         if (!pedido) {
@@ -88,20 +123,43 @@ module.exports = srv => {
             return;
         }
 
+        if (!lineas.length) {
+            req.error(400, 'El pedido no tiene líneas');
+            return;
+        }
+
+        // Validar líneas
+        for (const linea of lineas) {
+            if (
+                !linea.Producto_Id ||
+                !linea.Variedad_Id ||
+                !linea.Caja_Id ||
+                !linea.Calibre_Id ||
+                !linea.Kilos ||
+                linea.Kilos <= 0
+            ) {
+                req.error(400, 'Existen líneas con campos obligatorios vacíos');
+                return;
+            }
+        }
+
         if (pedido.Estado_code === 'F') {
             req.error(400, 'El pedido ya está finalizado');
             return;
         }
 
-        // (Opcional) Validar trazabilidad
-        const trazas = await tx.run(
-            SELECT.from('Trazabilidad')
-                .where({ 'Linea.Pedido_Id': pedido.Id })
-        );
+        if (pedido.Estado_code === 'P') {
+            // (Opcional) Validar trazabilidad
+            const trazas = await tx.run(
+                SELECT.from('Trazabilidad')
+                    .where({ 'Linea.Pedido_Id': pedido.Id })
+            );
 
-        if (!trazas.length) {
-            req.error(400, 'El pedido no tiene trazabilidad');
-            return;
+            if (!trazas.length) {
+                req.error(400, 'El pedido no tiene asignada entradas');
+                return;
+            }
+
         }
 
     });

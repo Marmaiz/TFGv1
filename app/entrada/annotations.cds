@@ -6,7 +6,7 @@ annotate service.Entrada with @(
             {
                 $Type : 'UI.DataField',
                 Value : Socio_Id,
-                Label : 'Socio_Id',
+                Label : '{i18n>Socio}',
             },
             {
                 $Type : 'UI.DataField',
@@ -32,6 +32,11 @@ annotate service.Entrada with @(
                 $Type : 'UI.DataField',
                 Label : 'Estado_code',
                 Value : Estado_code,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : Variedad_Id,
+                Label : '{i18n>Variedadid}',
             },
         ],
     },
@@ -91,7 +96,7 @@ annotate service.Entrada with {
                 },
             ],
         },
-        Common.ValueListWithFixedValues : true,
+        Common.ValueListWithFixedValues : false,
     )
 };
 
@@ -136,6 +141,7 @@ annotate service.Entrada with {
                     ValueListProperty : 'Nombre',
                 },
             ],
+            Label : 'Producto',
         },
         Common.ValueListWithFixedValues : true,
     )
@@ -165,4 +171,25 @@ annotate service.Calibre with {
         Common.Text : Nombre,
         Common.Text.@UI.TextArrangement : #TextOnly,
 )};
+
+annotate service.Entrada with {
+    Variedad @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Variedad',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : Variedad_Id,
+                    ValueListProperty : 'Id',
+                },
+            ],
+            Label : '{i18n>Variedad}',
+        },
+        Common.ValueListWithFixedValues : true,
+)};
+
+annotate service.Variedad with {
+    Id @Common.Text : Nombre
+};
 

@@ -9,9 +9,9 @@ using {
 
 /***** Entidades de datos maestros ********/
 
-entity Familias {
+entity Producto {
     key Id          : UUID;
-        Family_Name : String(100);
+        Nombre : String(100);
 }
 
 entity Calibre {
@@ -24,16 +24,12 @@ entity Caja {
     key Id       : UUID;
         Nombre   : String(50);
         Peso     : Integer;
-        Calibre  : Association to Calibre;
-        Producto : Association to Producto;
 };
 
-entity Producto {
+entity Variedad {
     key Id      : UUID;
         Nombre  : String(100);
-        Familia : Association to Familias;
-        Calibre : Association to many Calibre
-                      on Calibre.Id
+        Producto : Association to Producto;
 }
 
 entity Pedido : managed {
@@ -48,11 +44,11 @@ entity Pedido : managed {
 entity Linea : managed {
     key Id         : UUID;
         Producto   : Association to Producto;
+        Variedad   : Association to Variedad;
         Calibre    : Association to Calibre;
         Caja       : Association to Caja;
         Pedido     : Association to Pedido;
         Kilos      : Integer;
-        Precio     : Integer;
         toEntradas : Association to many Trazabilidad
                          on toEntradas.Linea = $self;
 /*                                Entrada  : Association to many Entrada
@@ -69,6 +65,7 @@ entity Entrada : managed {
         Kilos_Merma       : Integer default 0;      /*para probar*/
         Calibre           : Association to Calibre;
         Producto          : Association to Producto;
+        Variedad          : Association to Variedad;
         Estado            : Association to Estado default 'D';
         toLineas          : Association to many Trazabilidad
                                 on toLineas.Entrada = $self;

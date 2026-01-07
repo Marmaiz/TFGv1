@@ -24,7 +24,6 @@ sap.ui.define([
             // Crear estructura vacía
             var newEntry = {
                 Cliente_Id: "",
-                //Fecha_Pedido: new Date(),
                 Fecha_Pedido: null,
                 Estado_code: "C"
             };
@@ -156,9 +155,9 @@ sap.ui.define([
             }
         },
 
-/**
-* Metodo para abrir la vista donde estan los detalles del pedido seleccionado
-*/
+        /**
+        * Metodo para abrir la vista donde estan los detalles del pedido seleccionado
+        */
         onDetail: function (oEvent) {
             MessageToast.show("Abriendo pedido...");
 
@@ -173,12 +172,33 @@ sap.ui.define([
             MessageToast.show("Procesando pedidos...");
             let oRouter = UIComponent.getRouterFor(this);
             oRouter.navTo("ListadoPedidosPorProcesar",
-                {  }
+                {}
             );
         },
 
         onPress: function (evt) {
             MessageToast.show(evt.getSource().getId() + " Pressed");
-        }
+        },
+
+        onTabSelect: function (oEvent) {
+            const sKey = oEvent.getParameter("key");
+            const oTable = this.byId("tablaPedidos");
+            const oBinding = oTable.getBinding("rows");
+
+            if (!oBinding) return;
+
+            if (sKey === "ALL") {
+                oBinding.filter([]);
+                return;
+            }
+
+            const oFilter = new sap.ui.model.Filter(
+                "Estado_code",
+                sap.ui.model.FilterOperator.EQ,
+                sKey
+            );
+
+            oBinding.filter([oFilter]);
+        },
     });
 });

@@ -1,4 +1,6 @@
 Id,Nombre,CIF,Direccion,Telefono
-c1d2e3f4-0000-0000-0000-000000000033,Juanito, 33224422,Calle falsa 123, 33445566
-c1d2e3f4-0000-0000-0000-000000000032,Mercadona, 33224422,Calle falsa 123, 33445566
-c1d2e3f4-0000-0000-0000-000000000035,Tomazito, 33224422,Quiero beso 123, 33445566
+19fa2748-6165-4e58-adf9-973936ec90e0,Consum,F-46078986,"Avenida Alginet, 1, 46460-Silla (Valencia",900500126
+55559d93-d9ee-481e-9ce2-aac54acb6a9f,Aldi,B62409065,"C/ Víctor Hugo, 1, 08174, Sant Cugat del Vallès (Barcelona)",900902466
+b2de508e-c2ac-4242-88c6-5a072446351a,Lidl,A60195278,"C/ Beat Oriol, S/N, Polígono Industrial La Granja, 08110, Montcada i Reixac (Barcelona).",935761500
+baf2c7de-232a-4ec6-a9e6-c1a183fdabe4,Mercadona,A-46103834,"C/ Alfonso Roig Alfonso s/n, Albalat dels Sorells, 46135, Valencia, España",800500220
+bc4c0218-97ac-49ed-ab6c-5563869f6931,Dia,A-80782519,"C/ Jacinto Benavente 2A, Parque Empresarial de Las Rozas, 28232 Las Rozas de Madrid",913985400

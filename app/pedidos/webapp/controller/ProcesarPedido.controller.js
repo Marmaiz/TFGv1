@@ -37,10 +37,6 @@ sap.ui.define([
        this._sLineaId = oLinea.Id; */
 
       // Crear estructura vacía
-      // cuando añado una entrada a un pedido que entidad estoy modificando ?
-      // debo crear un instancia de trazabilidad con la linea y la entrada, y los kilos utilizados
-      // luego al validar debo modificar la instancia de Entrada, y restarle los kilos que he gastado 
-      // Id,Linea_Id,Entrada_Id,Kilos_Usados
       var newEntry = {
         Linea_Id: this._sLineaId,
         Entrada_Id: "",
@@ -177,9 +173,10 @@ sap.ui.define([
         return;
       }
 
-      var oProductoId = this._oLineaSeleccionada.Producto_Id;
+      // creo una variable donde almaceno la variedad para luego filtrar solo esas entradas
+      var oVariedadId = this._oLineaSeleccionada.Variedad_Id;
 
-      if (!oProductoId) {
+      if (!oVariedadId) {
         MessageBox.error("La línea no tiene producto");
         return;
       }
@@ -194,7 +191,7 @@ sap.ui.define([
 
       // Esperar a que el binding exista
       var oBinding = this._oDialogNuevaEntrada.getBinding("items");
-
+    // filtro las entradas donde sean Greater Than GT 0 los kilos y Equal EQ a la variedad del producto
       if (oBinding) {
         const aFilters = [
           new sap.ui.model.Filter(
@@ -203,9 +200,9 @@ sap.ui.define([
             0
           ),
           new sap.ui.model.Filter(
-            "Producto_Id",
+            "Variedad_Id",
             sap.ui.model.FilterOperator.EQ,
-            oProductoId
+            oVariedadId
           )
         ];
         oBinding.filter(aFilters);

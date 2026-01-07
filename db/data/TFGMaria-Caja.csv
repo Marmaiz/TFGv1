@@ -1,2 +1,4 @@
-Id,Nombre,Peso,Calibre_Id,Producto_Id
-ca1b2c3d4-0000-0000-0000-00000000001,Caja 4kg,12000,c1d2e3f4-0000-0000-0000-000000000001,a2245b44-d1b8-4e1e-9753-a2b6d7af5ee1
+Id,Nombre,Peso
+61c84b33-8e2f-4094-8330-3b16f9339fb8,Caja 4kg,4
+ecfd32d8-374a-47a6-8dc2-a65cbf96b287,Caja IFCO LL6410 600 x 400 x 117,10
+fce9fd7e-ae9c-40d7-bb70-112354689c86,Caja 2kg,2

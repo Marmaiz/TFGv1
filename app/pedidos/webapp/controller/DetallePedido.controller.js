@@ -21,16 +21,16 @@ sap.ui.define([
         //path: `/Pedido(Id=guid'${oArgs.Id}',IsActiveEntity=true)`,
         path: `/Pedido(Id=guid'${oArgs.Id}')`,
 
-        
+
         /*  parameters: {
           expand: "Lineas"
-        } */ 
+        } */
       })
     },
 
-/**
- * Metodo para el agregado de una línea a la Tabla
- */
+    /**
+     * Metodo para el agregado de una línea a la Tabla
+     */
     onAgregarLinea: function () {
       console.log("Agregar línea presionado")
       //var sValor = this.getView().byId("idInputNombre").getValue();
@@ -44,20 +44,20 @@ sap.ui.define([
               oView.addDependent(this._oDialogNuevaLinea);
             } */
 
-//PARA OBTENER EL PEDIDO_ID
-  // Obtener el Pedido actual desde el ElementBinding 
-  const oPedido = oView.getElementBinding().getBoundContext().getObject();
-  const pedidoId = oPedido.Id;   
+      //PARA OBTENER EL PEDIDO_ID
+      // Obtener el Pedido actual desde el ElementBinding 
+      const oPedido = oView.getElementBinding().getBoundContext().getObject();
+      const pedidoId = oPedido.Id;
 
       // Crear estructura vacía 
-      var newEntry = {        
+      var newEntry = {
         Producto_Id: "",
+        Variedad_Id: "",
         Calibre_Id: "",
         Caja_Id: "",
         Pedido_Id: pedidoId,
         Kilos: 0,
-        Precio: 0,
-        /* Entrada_Id: "",  Id,Producto_Id,Calibre_Id,Caja_Id,Pedido_Id,Kilos,Precio */
+        /* Id,Producto_Id,Variedad_Id,Calibre_Id,Caja_Id,Pedido_Id,Kilos */
       };
 
       if (!this._oDialogNuevaLinea) {
@@ -77,9 +77,9 @@ sap.ui.define([
       this.getView().setModel(oModelNuevaLinea, "NuevaLineaModel");
     },
 
-/**
- * Metodo para realizar la consulta a la BD y crear la linea
- */
+    /**
+     * Metodo para realizar la consulta a la BD y crear la linea
+     */
     onConfirmarNuevaLinea: function () {
       /*       var oView = this.getView();
             var oNuevaLineaModel = this.getView().getModel("NuevaLineaModel");
@@ -90,17 +90,14 @@ sap.ui.define([
       /* solucion de chaty*/
       const oModel = this.getView().getModel();     // OData V2 model
       const oData = this.getView().getModel("NuevaLineaModel").getData();
-      const oView = this.getView();
-
-      console.log(oData);
 
       // Obtenemos el path del Pedido actual
-        //const binding = oView.getElementBinding();
-        // const pedidoPath = binding.getPath();  // "/Pedido(Id=guid'...')"
+      //const binding = oView.getElementBinding();
+      // const pedidoPath = binding.getPath();  // "/Pedido(Id=guid'...')"
 
       // Path para crear la línea (sub-collection)
-        //const lineaPath = pedidoPath + "/Linea";      
-      const that = this;     
+      //const lineaPath = pedidoPath + "/Linea";      
+      const that = this;
 
       //oModel.create(lineaPath, oData, {
       oModel.create("/Linea", oData, {
@@ -119,9 +116,9 @@ sap.ui.define([
       });
     },
 
-/**
- * Metodo para cancelar la creacion de una nueva linea
- */
+    /**
+     * Metodo para cancelar la creacion de una nueva linea
+     */
     onCancelarNuevaLinea: function () {
       this._oDialogNuevaLinea.close();
     },
@@ -130,45 +127,45 @@ sap.ui.define([
  * Metodo para eliminar una nueva linea
  */    onEliminarLinea: function () {
 
-            const oTable = this.byId("tablaLineas");
-            const aSelectedIndices = oTable.getSelectedIndices();
+      const oTable = this.byId("tablaLineas");
+      const aSelectedIndices = oTable.getSelectedIndices();
 
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("Seleccione una linea para eliminar.");
-                return;
-            }
+      if (aSelectedIndices.length === 0) {
+        MessageToast.show("Seleccione una linea para eliminar.");
+        return;
+      }
 
-            // Solo permitimos eliminar 1 pedido a la vez
-            const iIndex = aSelectedIndices[0];
+      // Solo permitimos eliminar 1 pedido a la vez
+      const iIndex = aSelectedIndices[0];
 
-            // Obtener el contexto de la fila seleccionada
-            const oContext = oTable.getContextByIndex(iIndex);
-            const sPath = oContext.getPath();     // "/Pedido(key...)"
+      // Obtener el contexto de la fila seleccionada
+      const oContext = oTable.getContextByIndex(iIndex);
+      const sPath = oContext.getPath();     // "/Pedido(key...)"
 
-            const oModel = this.getView().getModel();
+      const oModel = this.getView().getModel();
 
-            // Confirmación
-            const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
-            if (!bConfirm) return;
+      // Confirmación
+      const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
+      if (!bConfirm) return;
 
-            try {
-                // DELETE al backend CAP
-                oModel.remove(sPath);
+      try {
+        // DELETE al backend CAP
+        oModel.remove(sPath);
 
-                MessageToast.show("Linea eliminada.");
+        MessageToast.show("Linea eliminada.");
 
-                // Actualizar la tabla
-                oModel.refresh(true);
+        // Actualizar la tabla
+        oModel.refresh(true);
 
-            } catch (err) {
-                console.error(err);
-                MessageToast.show("Error al eliminar linea.");
-            }
-        },
+      } catch (err) {
+        console.error(err);
+        MessageToast.show("Error al eliminar linea.");
+      }
+    },
 
-/**
- * Metodo para poder editar el pedido
- */
+    /**
+     * Metodo para poder editar el pedido
+     */
     onHacerEditable: function () {
       const oView = this.getView();
 
@@ -177,7 +174,52 @@ sap.ui.define([
       oView.byId("inputFechaPedido").setEditable(true);
       oView.byId("btnAgregarLinea").setEnabled(true);
       oView.byId("btnEliminarLinea").setEnabled(true);
+    },
+
+    onProcesarPedido: function () {
+
+      const oView = this.getView();
+      const oModel = oView.getModel();
+
+      // Pedido actual
+      const oContext = oView.getElementBinding().getBoundContext();
+      const oPedido = oContext.getObject();
+      const sPath = oContext.getPath(); // "/Pedido(Id=guid'...')"
+
+      // UX básica (opcional)
+      const aLineas = oPedido.Lineas;
+      if (!aLineas || aLineas.length === 0) {
+        MessageBox.error("El pedido no tiene líneas");
+        return;
+      }
+
+      MessageBox.confirm(
+        "¿Desea procesar el pedido?",
+        {
+          onClose: (sAction) => {
+            if (sAction !== MessageBox.Action.OK) return;
+
+            // UPDATE directo al backend
+            oModel.update(sPath, {
+              Estado_code: "P"
+            }, {
+              success: function () {
+                MessageToast.show("Pedido procesado correctamente");
+                oModel.refresh(true);
+              },
+              error: function (oError) {
+                let sMsg = "Error al procesar pedido";
+                try {
+                  sMsg = JSON.parse(oError.responseText).error.message.value;
+                } catch (e) { }
+                MessageBox.error(sMsg);
+              }
+            });
+          }
+        }
+      );
     }
+
 
   });
 });

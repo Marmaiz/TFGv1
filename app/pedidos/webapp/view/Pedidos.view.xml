@@ -2,107 +2,133 @@
     controllerName="pedidos.controller.Pedidos"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:p="sap.m.plugins"
     xmlns:t="sap.ui.table"
-    xmlns:u="sap.ui.unified"
-    xmlns:c="sap.ui.core"
->
+    xmlns:c="sap.ui.core">
+
     <Page
         id="pagePedidos"
-        title="{i18n>title}"
-    >
+        title="{i18n>title}">
+
         <content>
+
+            <!-- ================== TOOLBAR ================== -->
             <Toolbar>
                 <ToolbarSpacer />
-                    <Button
-                        id="btnCrearPed"
-                        text="Crear nuevo pedido"
-                        press="onCrearPedido"
-                    />
-                    <Button
-                        id="btnborrarPed"
-                        type="Reject"
-                        text="Eliminar"
-                        press="onEliminarPedido"
-                    />
-                    <Button
-                        id="btnProcPed"
-                        text="Procesar"
-                        press="onProcesarPedidos"
-                    />
+                <Button
+                    id="btnCrearPed"
+                    text="Crear nuevo pedido"
+                    press="onCrearPedido"/>
+                <Button
+                    id="btnborrarPed"
+                    type="Reject"
+                    text="Eliminar"
+                    press="onEliminarPedido"/>
+                <Button
+                    id="btnProcPed"
+                    text="Procesar"
+                    press="onProcesarPedidos"/>
                 <ToolbarSpacer />
             </Toolbar>
 
-            <t:Table
-                id="tablaPedidos"
-                rows="{ path: '/Pedido', 
-						parameters: {expand: 'Cliente,Estado'},
-						sorter: {
-								path: 'Fecha_Pedido',
-								descending: true
-								} 
-					}"
-                selectionMode="MultiToggle"
-                ariaLabelledBy="title"
-            >
-                <t:columns>
-                    <t:Column>
-                        <Label text="Pedido" />
-                        <t:template>
-                            <Text
-                                text="{Id}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+            <!-- ================== ICON TAB BAR ================== -->
+            <IconTabBar
+                id="idIconTabBarPedidos"
+                expandable="false"
+                select="onTabSelect"
+                class="sapUiResponsiveContentPadding">
 
-                    <t:Column>
-                        <Label text="Cliente" />
-                        <t:template>
-                            <Text
-                                text="{Cliente/Nombre}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                <items>
 
-                    <t:Column>
-                        <Label text="Fecha" />
-                        <t:template>
-                            <Text
-                                text="{
-										path: 'Fecha_Pedido',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: { pattern: 'dd/MM/yyyy' }
-									}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                    <IconTabFilter
+                        key="ALL"
+                        text="Todos"
+                        icon="sap-icon://list"/>
 
-                    <t:Column>
-                        <Label text="Estado" />
-                        <t:template>
-                            <Text
-                                text="{Estado/name}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                    <IconTabFilter
+                        key="C"
+                        text="Creados"
+                        icon="sap-icon://pending"/> 
 
-                    <t:Column>
-                        <Label text="Mas info" />
-                        <t:template>
-                            <t:RowAction>
-                                <t:RowActionItem
-                                    type="Navigation"
-                                    press="onDetail"
-                                />
-                            </t:RowAction>
-                        </t:template>
-                    </t:Column>
-                </t:columns>
-            </t:Table>
+                    <IconTabFilter
+                        key="P"
+                        text="Pendientes"
+                        icon="sap-icon://pending"/>
+
+                    <IconTabFilter
+                        key="F"
+                        text="Finalizados"
+                        icon="sap-icon://complete"/>
+
+                </items>
+
+                <!-- ================== TABLA ================== -->
+                <content>
+                    <t:Table
+                        id="tablaPedidos"
+                        rows="{
+                            path: '/Pedido',
+                            parameters: {
+                                expand: 'Cliente,Estado',
+                                sorter: {
+                                    path: 'Fecha_Pedido',
+                                    descending: true
+                                }
+                            }
+                        }"
+                        selectionMode="MultiToggle">
+
+                        <t:columns>
+
+                            <t:Column>
+                                <Label text="Pedido"/>
+                                <t:template>
+                                    <Text text="{Id}"/>
+                                </t:template>
+                            </t:Column>
+
+                            <t:Column>
+                                <Label text="Cliente"/>
+                                <t:template>
+                                    <Text text="{Cliente/Nombre}"/>
+                                </t:template>
+                            </t:Column>
+
+                            <t:Column>
+                                <Label text="Fecha"/>
+                                <t:template>
+                                    <Text
+                                        text="{
+                                            path: 'Fecha_Pedido',
+                                            type: 'sap.ui.model.type.Date',
+                                            formatOptions: { pattern: 'dd/MM/yyyy' }
+                                        }"/>
+                                </t:template>
+                            </t:Column>
+
+                            <t:Column>
+                                <Label text="Estado"/>
+                                <t:template>
+                                    <Text text="{Estado/name}"/>
+                                </t:template>
+                            </t:Column>
+
+                            <t:Column>
+                                <Label text="Más info"/>
+                                <t:template>
+                                    <t:RowAction>
+                                        <t:RowActionItem
+                                            type="Navigation"
+                                            press="onDetail"/>
+                                    </t:RowAction>
+                                </t:template>
+                            </t:Column>
+
+                        </t:columns>
+                    </t:Table>
+                </content>
+
+            </IconTabBar>
+
         </content>
     </Page>
 </mvc:View>

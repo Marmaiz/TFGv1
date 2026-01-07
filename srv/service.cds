@@ -4,7 +4,7 @@ using {TFGMaria} from '../db/schema';
 service MasterDataService {
   @odata.draft.enabled
   @fiori.draft.enabled
-  entity Familias as projection on TFGMaria.Familias;
+  entity Variedad as projection on TFGMaria.Variedad;
 
   @fiori.draft.enabled
   entity Calibre  as projection on TFGMaria.Calibre;
@@ -30,7 +30,8 @@ service MasterDataService {
 service PedidosService {
 
   entity Pedido   as projection on TFGMaria.Pedido;
-
+  @odata.draft.enabled
+  @fiori.draft.enabled
   entity Entrada  as projection on TFGMaria.Entrada;
 
   entity Linea  as projection on TFGMaria.Linea;
@@ -46,5 +47,7 @@ service PedidosService {
   entity Caja     as projection on TFGMaria.Caja;
 
   entity Producto as projection on TFGMaria.Producto;
+
+  entity Variedad as projection on TFGMaria.Variedad;
 
 }

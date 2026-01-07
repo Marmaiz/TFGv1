@@ -17,6 +17,14 @@
                 <core:Item key="{Id}" text="{Nombre}" />
             </ComboBox>
 
+            <Label text="Variedad"/>
+            <ComboBox
+                items="{ path: '/Variedad'}"
+                selectedKey="{NuevaLineaModel>/Variedad_Id}"
+                width="100%">
+                <core:Item key="{Id}" text="{Nombre}" />
+            </ComboBox>
+
             <Label text="Calibre"/>
             <ComboBox
                 items="{ path: '/Calibre' }"
@@ -33,19 +41,9 @@
                 <core:Item key="{Id}" text="{Nombre}" />
             </ComboBox>
 
-<!--             <Label text="Entrada"/>
-            <ComboBox
-                items="{ path: '/Entrada' }"
-                selectedKey="{NuevaLineaModel>/Entrada_Id}"
-                width="100%">
-                <core:Item key="{Id}" text="{Id}" />
-            </ComboBox> -->
-
             <Label text="Kilos"/>
             <Input value="{NuevaLineaModel>/Kilos}" type="Number"/>
 
-            <Label text="Precio"/>
-            <Input value="{NuevaLineaModel>/Precio}" type="Number"/>
         </VBox>
 
         <beginButton>
