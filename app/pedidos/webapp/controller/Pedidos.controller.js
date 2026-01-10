@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/m/MessageToast"
-], (Controller, UIComponent, MessageToast) => {
+    "sap/m/MessageToast",
+    "sap/m/MessageBox"
+], (Controller, UIComponent, MessageToast, MessageBox) => {
     "use strict";
 
     return Controller.extend("pedidos.controller.Pedidos", {
@@ -78,81 +79,40 @@ sap.ui.define([
             this._oDialogNuevoPedido.close();
         },
 
-        onEliminarPedido: async function () {
+
+        onEliminarPedido: function () {
 
             const oTable = this.byId("tablaPedidos");
-            const aSelectedIndices = oTable.getSelectedIndices();
+            const oSelectedItem = oTable.getSelectedItem();
+            var oContext = oSelectedItem.getBindingContext();
 
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("Seleccione un pedido para eliminar.");
-                return;
-            }
-
-            // Solo permitimos eliminar 1 pedido a la vez
-            const iIndex = aSelectedIndices[0];
-
-            // Obtener el contexto de la fila seleccionada
-            const oContext = oTable.getContextByIndex(iIndex);
             const sPath = oContext.getPath();     // "/Pedido(key...)"
 
             const oModel = this.getView().getModel();
 
             // Confirmación
-            const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
-            if (!bConfirm) return;
+            MessageBox.confirm(
+                "¿Seguro que quieres eliminar este pedido?",
+                {
+                    onClose: (sAction) => {
+                        if (sAction !== MessageBox.Action.OK) return;
 
-            try {
-                // DELETE al backend CAP
-                await oModel.remove(sPath);
-
-                sap.m.MessageToast.show("Pedido eliminado.");
-
-                // Actualizar la tabla
-                oModel.refresh(true);
-
-            } catch (err) {
-                console.error(err);
-                sap.m.MessageToast.show("Error al eliminar el pedido.");
-            }
-        },
-
-
-        onEliminarPedido2: function () {
-
-            const oTable = this.byId("tablaPedidos");
-            const aSelectedIndices = oTable.getSelectedIndices();
-
-            if (aSelectedIndices.length === 0) {
-                MessageToast.show("Seleccione un pedido para eliminar.");
-                return;
-            }
-
-            // Solo permitimos eliminar 1 pedido a la vez
-            const iIndex = aSelectedIndices[0];
-
-            // Obtener el contexto de la fila seleccionada
-            const oContext = oTable.getContextByIndex(iIndex);
-            const sPath = oContext.getPath();     // "/Pedido(key...)"
-
-            const oModel = this.getView().getModel();
-
-            // Confirmación
-            const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
-            if (!bConfirm) return;
-
-            try {
-                // DELETE al backend CAP
-                oModel.remove(sPath);
-
-                sap.m.MessageToast.show("Pedido eliminado.");
-
-                // Actualizar la tabla
-                oModel.refresh(true);
-
-            } catch (err) {
-                console.error(err);
-                sap.m.MessageToast.show("Error al eliminar el pedido.");
-            }
+                        oModel.remove(sPath, {
+                            success: function () {
+                                MessageToast.show("Pedido eliminado correctamente");
+                                oModel.refresh(true);
+                            },
+                            error: function (oError) {
+                                let sMsg = "Error al eliminar el pedido";
+                                try {
+                                    sMsg = JSON.parse(oError.responseText).error.message.value;
+                                } catch (e) { }
+                                MessageBox.error(sMsg);
+                            }
+                        });
+                    }
+                }
+            );
         },
 
         /**
@@ -183,7 +143,8 @@ sap.ui.define([
         onTabSelect: function (oEvent) {
             const sKey = oEvent.getParameter("key");
             const oTable = this.byId("tablaPedidos");
-            const oBinding = oTable.getBinding("rows");
+            //const oBinding = oTable.getBinding("rows");
+            const oBinding = oTable.getBinding("items");
 
             if (!oBinding) return;
 
@@ -200,5 +161,17 @@ sap.ui.define([
 
             oBinding.filter([oFilter]);
         },
+
+        formatter: {
+            estadoColor: function (sEstado) {
+                switch (sEstado) {
+                    case "C": return "Information";
+                    case "P": return "Warning";
+                    case "F": return "Success";
+                    default: return "None";
+                }
+            }
+        }
+
     });
 });

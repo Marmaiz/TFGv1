@@ -29,7 +29,8 @@
     "watch-socio": "cds watch --open socio/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-cliente": "cds watch --open cliente/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-calibre": "cds watch --open calibre/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-entrada": "cds watch --open entrada/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-entrada": "cds watch --open entrada/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-productos": "cds watch --open productos/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "cds": {
@@ -53,6 +54,7 @@
     "app/socio",
     "app/cliente",
     "app/calibre",
-    "app/entrada"
+    "app/entrada",
+    "app/productos"
   ]
 }

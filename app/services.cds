@@ -9,3 +9,5 @@ using from './socio/annotations';
 using from './cliente/annotations';
 
 using from './entrada/annotations';
+
+using from './productos/annotations';

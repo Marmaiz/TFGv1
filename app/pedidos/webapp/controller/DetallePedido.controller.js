@@ -62,6 +62,7 @@ sap.ui.define([
 
       if (!this._oDialogNuevaLinea) {
         this._oDialogNuevaLinea = sap.ui.xmlfragment(
+          oView.getId(),
           "pedidos.view.NuevaLinea",
           this
         );
@@ -123,57 +124,82 @@ sap.ui.define([
       this._oDialogNuevaLinea.close();
     },
 
+    onProductoSeleccionado: function (oEvent) {
+      const sProductoId = oEvent.getSource().getSelectedKey();
+
+      const oVariedadCombo = this.getView().byId("cbVariedad");
+      const oBinding = oVariedadCombo.getBinding("items");
+
+      oVariedadCombo.setEditable(true);
+
+      // Limpiar selección previa
+      this.getView().getModel("NuevaLineaModel").setProperty("/Variedad_Id", null);
+
+      if (!sProductoId) {
+        oBinding.filter([]);
+        return;
+      }
+
+      const oFilter = new sap.ui.model.Filter(
+        "Producto_Id",
+        sap.ui.model.FilterOperator.EQ,
+        sProductoId
+      );
+
+      oBinding.filter([oFilter]);
+    },
+
+
 /**
  * Metodo para eliminar una nueva linea
  */    onEliminarLinea: function () {
 
       const oTable = this.byId("tablaLineas");
-      const aSelectedIndices = oTable.getSelectedIndices();
+      const oSelectedItem = oTable.getSelectedItem();
+      var oContext = oSelectedItem.getBindingContext();
 
-      if (aSelectedIndices.length === 0) {
-        MessageToast.show("Seleccione una linea para eliminar.");
-        return;
-      }
-
-      // Solo permitimos eliminar 1 pedido a la vez
-      const iIndex = aSelectedIndices[0];
-
-      // Obtener el contexto de la fila seleccionada
-      const oContext = oTable.getContextByIndex(iIndex);
       const sPath = oContext.getPath();     // "/Pedido(key...)"
 
       const oModel = this.getView().getModel();
 
       // Confirmación
-      const bConfirm = confirm("¿Seguro que quieres eliminar este pedido?");
-      if (!bConfirm) return;
+            MessageBox.confirm(
+        "¿Seguro que quieres eliminar esta linea?",
+        {
+          onClose: (sAction) => {
+            if (sAction !== MessageBox.Action.OK) return;
+            
+            oModel.remove(sPath, {
+              success: function () {
+                MessageToast.show("Linea eliminada correctamente");
+                oModel.refresh(true);
+              },
+              error: function (oError) {
+                let sMsg = "Error al eliminar linea";
+                try {
+                  sMsg = JSON.parse(oError.responseText).error.message.value;
+                } catch (e) { }
+                MessageBox.error(sMsg);
+              }
+            });
+          }
+        }
+      );
 
-      try {
-        // DELETE al backend CAP
-        oModel.remove(sPath);
-
-        MessageToast.show("Linea eliminada.");
-
-        // Actualizar la tabla
-        oModel.refresh(true);
-
-      } catch (err) {
-        console.error(err);
-        MessageToast.show("Error al eliminar linea.");
-      }
+     
     },
 
     /**
      * Metodo para poder editar el pedido
      */
-    onHacerEditable: function () {
+    onHacerEditable: function (editable) {
       const oView = this.getView();
 
       // afectamos todos los controles que necesiten editarse
-      oView.byId("inputClientePedido").setEditable(true);
-      oView.byId("inputFechaPedido").setEditable(true);
-      oView.byId("btnAgregarLinea").setEnabled(true);
-      oView.byId("btnEliminarLinea").setEnabled(true);
+      oView.byId("inputClientePedido").setEditable(editable);
+      oView.byId("inputFechaPedido").setEditable(editable);
+      oView.byId("btnAgregarLinea").setEnabled(editable);
+      oView.byId("btnEliminarLinea").setEnabled(editable);
     },
 
     onProcesarPedido: function () {
@@ -218,6 +244,24 @@ sap.ui.define([
           }
         }
       );
+    },
+
+    onNavBack: function () {
+      const oView = this.getView();
+      const oModel = oView.getModel();
+      const oRouter = UIComponent.getRouterFor(this);
+
+      // ❗ Cancelar cambios pendientes
+      if (oModel.hasPendingChanges()) {
+        oModel.resetChanges();
+      }
+
+      this.onHacerEditable(false);
+
+      oModel.refresh(true, true);
+
+      // Navegar atrás
+      oRouter.navTo("RoutePedidos");
     }
 
 

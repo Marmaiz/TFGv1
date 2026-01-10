@@ -13,15 +13,18 @@
             <ComboBox
                 items="{ path: '/Producto'}"
                 selectedKey="{NuevaLineaModel>/Producto_Id}"
+                selectionChange=".onProductoSeleccionado"
                 width="100%">
                 <core:Item key="{Id}" text="{Nombre}" />
             </ComboBox>
 
             <Label text="Variedad"/>
             <ComboBox
+                id="cbVariedad"
                 items="{ path: '/Variedad'}"
                 selectedKey="{NuevaLineaModel>/Variedad_Id}"
-                width="100%">
+                width="100%"
+                editable="false">
                 <core:Item key="{Id}" text="{Nombre}" />
             </ComboBox>
 

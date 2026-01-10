@@ -2,91 +2,80 @@
     controllerName="pedidos.controller.ListadoPedidosPorProcesar"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:p="sap.m.plugins"
-    xmlns:t="sap.ui.table"
-    xmlns:u="sap.ui.unified"
-    xmlns:c="sap.ui.core"
->
+    xmlns:c="sap.ui.core">
+
     <Page
         id="pageListadoPedidosPorProcesar"
         title="{i18n>title}"
-    >
+        showNavButton="true"
+        navButtonPress="onNavBack"
+        class="sapUiContentPadding">
+
+        <!-- Content: tabla responsive -->
         <content>
+            <VBox class="sapUiSmallMargin">
 
-            <t:Table
-                id="tablaPedidosPorProcesar"
-                rows="{ path: '/Pedido', 
-						parameters: {expand: 'Cliente,Estado'},
-                        filters: [{
-                                    path: 'Estado_code',
-                                    operator: 'EQ',
-                                    value1: 'P'
-                                }],
-						sorter: {
-								path: 'Fecha_Pedido',
-								descending: true
-								} 
-					}"
-                selectionMode="MultiToggle"
-                ariaLabelledBy="title"
-            >
-                <t:columns>
-                    <t:Column>
-                        <Label text="Pedido" />
-                        <t:template>
-                            <Text
-                                text="{Id}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                <Table
+                    id="tablaPedidosPorProcesar"
+                    inset="false"
+                    headerText="Pedidos Pendientes"
+                    mode="SingleSelectMaster"
+                    items="{
+                        path: '/Pedido',
+                        parameters: {expand: 'Cliente,Estado'},
+                        filters: [{ path: 'Estado_code', operator: 'EQ', value1: 'P' }],
+                        sorter: { path: 'Fecha_Pedido', descending: true }
+                    }">
 
-                    <t:Column>
-                        <Label text="Cliente" />
-                        <t:template>
-                            <Text
-                                text="{Cliente/Nombre}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Pedidos Pendientes"/>
+                            <ToolbarSpacer/>
+                            <SearchField
+                                width="300px"
+                                placeholder="Buscar por cliente..."
+                                liveChange="onSearch"/>
+                        </Toolbar>
+                    </headerToolbar>
 
-                    <t:Column>
-                        <Label text="Fecha" />
-                        <t:template>
-                            <Text
-                                text="{
-										path: 'Fecha_Pedido',
-										type: 'sap.ui.model.type.Date',
-										formatOptions: { pattern: 'dd/MM/yyyy' }
-									}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                    <columns>
+                        <Column>
+                            <Text text="Pedido"/>
+                        </Column>
+                        <Column>
+                            <Text text="Cliente"/>
+                        </Column>
+                        <Column>
+                            <Text text="Fecha"/>
+                        </Column>
+                        <Column>
+                            <Text text="Estado"/>
+                        </Column>
+                        <Column>
+                            <Text text="Acciones"/>
+                        </Column>
+                    </columns>
 
-                    <t:Column>
-                        <Label text="Estado" />
-                        <t:template>
-                            <Text
-                                text="{Estado/name}"
-                                wrapping="false"
-                            />
-                        </t:template>
-                    </t:Column>
+                    <items>
+                        <ColumnListItem type="Active" press="onGestionar">
+                            <cells>
+                                <Text text="{Id}"/>
+                                <Text text="{Cliente/Nombre}"/>
+                                <Text text="{
+                                    path: 'Fecha_Pedido',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { pattern: 'dd/MM/yyyy' }
+                                }"/>
+                                <Text text="{Estado/name}"/>
+                                <Button
+                                    icon="sap-icon://navigation-right-arrow"
+                                    press="onGestionar"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
 
-                    <t:Column>
-                        <Label text="Acciones" />
-                        <t:template>
-                            <Button
-                                text="Gestionar Pedido"
-                                icon="sap-icon://navigation-right-arrow"
-                                press="onGestionar"
-                            />
-                        </t:template>
-                    </t:Column>
-                </t:columns>
-            </t:Table>
+                </Table>
+            </VBox>
         </content>
     </Page>
 </mvc:View>

@@ -35,12 +35,14 @@ sap.ui.define([
        const oLineaCtx = oEvent.getSource().getBindingContext();
        const oLinea = oLineaCtx.getObject();
        this._sLineaId = oLinea.Id; */
-
+      const oLinea = oEvent.getSource().getBindingContext().getObject();
+      this._sLineaId = oLinea.Id;
       // Crear estructura vacía
       var newEntry = {
         Linea_Id: this._sLineaId,
         Entrada_Id: "",
-        Kilos_Usados: 0
+        Kilos_Usados: 0,
+        Kilos_Merma: 0
       };
 
       if (!this._oDialogNuevaEntrada) {
@@ -80,7 +82,10 @@ sap.ui.define([
 
       // ASIGNAR Entrada_Id
       oData.Entrada_Id = oEntrada.Id;
-
+      if (!oItem) {
+        MessageBox.error("No se ha seleccionado ninguna entrada");
+        return;
+      }
       /*     if (!oData.Kilos_Usados || oData.Kilos_Usados <= 0) {
               MessageToast.show("Introduce los kilos a utilizar");
               return;
@@ -111,7 +116,8 @@ sap.ui.define([
       var newEntry = {
         Linea_Id: oLinea.Id,
         Entrada_Id: "",
-        Kilos_Usados: 0
+        Kilos_Usados: 0,
+        Kilos_Merma: 0
       };
 
       if (!this._oDialogAsignarEntrada) {
@@ -191,7 +197,7 @@ sap.ui.define([
 
       // Esperar a que el binding exista
       var oBinding = this._oDialogNuevaEntrada.getBinding("items");
-    // filtro las entradas donde sean Greater Than GT 0 los kilos y Equal EQ a la variedad del producto
+      // filtro las entradas donde sean Greater Than GT 0 los kilos y Equal EQ a la variedad del producto
       if (oBinding) {
         const aFilters = [
           new sap.ui.model.Filter(
@@ -234,7 +240,7 @@ sap.ui.define([
       var body = {
         Linea_Id: data.Linea_Id,
         Entrada_Id: data.Entrada_Id,
-        Kilos_Usados: data.Kilos_Usados
+        Kilos_Usados: data.Kilos_Usados,
       };
 
       oModel.create("/Trazabilidad", body, {
@@ -263,7 +269,10 @@ sap.ui.define([
       const oRouter = UIComponent.getRouterFor(this);
 
       const sPedidoId = oCtx.getProperty("Id");
-
+      if (!oCtx) {
+        MessageBox.error("No se pudo obtener el pedido actual");
+        return;
+      }
       MessageBox.confirm("¿Deseas finalizar el pedido?", {
         onClose: function (oAction) {
 

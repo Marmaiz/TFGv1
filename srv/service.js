@@ -95,29 +95,55 @@ module.exports = srv => {
             UPDATE(Entrada)
                 .set({
                     Kilos_disponibles: entrada.Kilos_disponibles - Kilos_Usados
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                 })
                 .where({ Id: Entrada_Id })
         );
     });
 
-
     /**finalizar pedido */
     srv.before('UPDATE', 'Pedido', async (req) => {
 
-        if (!req.data.Estado_code) return;
+        // Verifico que exista el campo Estado del pedido
+        const nuevoEstado = req.data.Estado_code;
+        if (!nuevoEstado) return; 
 
+        // Declaro una variable para almacenar la transaccion
         const tx = cds.tx(req);
 
+        // Selecciono el pedido de la consulta 
         const pedido = await tx.run(
             SELECT.one.from('Pedido').where({ Id: req.data.Id })
-
         );
 
-        // Líneas del pedido
+        // Selecciono las líneas del pedido
         const lineas = await tx.run(
             SELECT.from('Linea').where({ Pedido_Id: pedido.Id })
         );
 
+        // Hago las comprobaciones
         if (!pedido) {
             req.error(404, 'Pedido no encontrado');
             return;
@@ -128,7 +154,7 @@ module.exports = srv => {
             return;
         }
 
-        // Validar líneas
+        // Valido que las lineas tengan los campos obligatorios, y kilos con un valor positivo
         for (const linea of lineas) {
             if (
                 !linea.Producto_Id ||
@@ -143,26 +169,52 @@ module.exports = srv => {
             }
         }
 
+        // Compruebo que el pedido no este finalizado ya
         if (pedido.Estado_code === 'F') {
             req.error(400, 'El pedido ya está finalizado');
             return;
         }
 
-        if (pedido.Estado_code === 'P') {
-            // (Opcional) Validar trazabilidad
-            const trazas = await tx.run(
+        if (nuevoEstado === 'F') {
+            // Valido que al pedido se le hayan asignado entradas antes de cambiar su estado de Creado a Procesando
+            let trazabilidad = await tx.run(
                 SELECT.from('Trazabilidad')
                     .where({ 'Linea.Pedido_Id': pedido.Id })
             );
 
-            if (!trazas.length) {
+            if (!trazabilidad.length) {
                 req.error(400, 'El pedido no tiene asignada entradas');
                 return;
             }
 
+            const lineas = await tx.run(
+                SELECT.from('Linea').where({ Pedido_Id: pedido.Id })
+            );
+
+            for (const linea of lineas) {
+                const result = await tx.run(
+                    SELECT.one
+                        .from('Trazabilidad')
+                        .columns`sum(Kilos_Usados) as total`
+                        .where({ Linea_Id: linea.Id })
+                );
+
+                // Devuelve los kilos asignados, si no existen asumo que son 0 kilos
+                const kilosAsignados = result?.total || 0;
+
+                if (kilosAsignados !== linea.Kilos) {
+                    req.error(
+                        400,
+                        'No se puede finalizar la línea, faltan kilos.'
+                    );
+                    return;
+                }
+            }
         }
 
     });
+
+
 
 
 
