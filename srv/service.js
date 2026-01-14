@@ -35,6 +35,10 @@ module.exports = srv => {
         var Kilos_Usados = req.data.Kilos_Usados;
         var Linea_Id = req.data.Linea_Id;
 
+        var Kilos_Merma = Number(req.data.Kilos_Merma || 0);
+
+        const kilosTotales = Kilos_Usados + Kilos_Merma;
+
         /*Detengo la ejecucion si no existen los datos*/
         if (!Entrada_Id || !Kilos_Usados) return;
 
@@ -43,6 +47,8 @@ module.exports = srv => {
                 Se confirma (commit) si todo sale bien
                 Se revierte (rollback) si ocurre un error */
         const tx = cds.tx(req);
+
+
 
         const entrada = await tx.run(
             /* SELECT.one.from(Entrada).where({ Id: Entrada_Id }) */
@@ -70,6 +76,11 @@ module.exports = srv => {
             return;
         }
 
+        if (entrada.Kilos_disponibles < kilosTotales) {
+            req.error(400, 'Kilos usados + merma superan los disponibles');
+            return;
+        }
+
         /* Calcular kilos ya usados en la línea */
         const result = await tx.run(
             SELECT.one
@@ -94,33 +105,14 @@ module.exports = srv => {
         await tx.run(
             UPDATE(Entrada)
                 .set({
-                    Kilos_disponibles: entrada.Kilos_disponibles - Kilos_Usados
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
+                    Kilos_disponibles: entrada.Kilos_disponibles - kilosTotales,
+                    Kilos_Merma: (entrada.Kilos_Merma || 0) + Kilos_Merma
                 })
                 .where({ Id: Entrada_Id })
         );
+
+        /* 🔒 Limpieza: evitamos que CAP intente persistir Kilos_Merma */
+        delete req.data.Kilos_Merma;
     });
 
     /**finalizar pedido */
@@ -128,7 +120,7 @@ module.exports = srv => {
 
         // Verifico que exista el campo Estado del pedido
         const nuevoEstado = req.data.Estado_code;
-        if (!nuevoEstado) return; 
+        if (!nuevoEstado) return;
 
         // Declaro una variable para almacenar la transaccion
         const tx = cds.tx(req);

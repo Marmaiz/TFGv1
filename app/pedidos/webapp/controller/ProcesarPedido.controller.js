@@ -42,7 +42,6 @@ sap.ui.define([
         Linea_Id: this._sLineaId,
         Entrada_Id: "",
         Kilos_Usados: 0,
-        Kilos_Merma: 0
       };
 
       if (!this._oDialogNuevaEntrada) {
@@ -119,7 +118,7 @@ sap.ui.define([
         Kilos_Usados: 0,
         Kilos_Merma: 0
       };
-
+console.log(newEntry);
       if (!this._oDialogAsignarEntrada) {
         this._oDialogAsignarEntrada = sap.ui.xmlfragment(
           "pedidos.view.AsignarEntrada",
@@ -241,6 +240,7 @@ sap.ui.define([
         Linea_Id: data.Linea_Id,
         Entrada_Id: data.Entrada_Id,
         Kilos_Usados: data.Kilos_Usados,
+        Kilos_Merma: data.Kilos_Merma
       };
 
       oModel.create("/Trazabilidad", body, {

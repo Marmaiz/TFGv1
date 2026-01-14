@@ -40,7 +40,7 @@
 
                     <Table
                         id="tablaPedidos"
-                        mode="SingleSelectMaster"
+                        mode="SingleSelectLeft"
                         growing="true"
                         growingScrollToLoad="true"
                         sticky="ColumnHeaders,HeaderToolbar"

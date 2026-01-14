@@ -78,6 +78,7 @@ entity Trazabilidad {
         Entrada      : Association to Entrada;
 
         Kilos_Usados : Integer; // <-- Kilos usados de esa entrada
+        Kilos_Merma  : Integer @cds.persistence.skip;
 }
 
 entity Estado : CodeList {

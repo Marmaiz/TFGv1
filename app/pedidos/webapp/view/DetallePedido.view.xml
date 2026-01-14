@@ -30,12 +30,24 @@
                         id="btnEditarPedido"
                         text="Editar"
                         press="onHacerEditable(true)"/>
+
+                    <Button
+                        id="btnGuardarPedido"
+                        text="Guardar"
+                        type="Emphasized"
+                        enabled="false"
+                        press="onGuardarPedido"/>
+
                     <Button
                         text="Procesar"
-                        type="Emphasized"
                         press="onProcesarPedido"/>
-                </f:actions>
 
+                    <Button
+                        id="btnCancelarEdicion"
+                        text="Cancelar"
+                        enabled="false"
+                        press="onCancelarEdicion"/>
+                </f:actions>
             </f:DynamicPageTitle>
         </f:title>
 

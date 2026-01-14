@@ -163,12 +163,12 @@ sap.ui.define([
       const oModel = this.getView().getModel();
 
       // Confirmación
-            MessageBox.confirm(
+      MessageBox.confirm(
         "¿Seguro que quieres eliminar esta linea?",
         {
           onClose: (sAction) => {
             if (sAction !== MessageBox.Action.OK) return;
-            
+
             oModel.remove(sPath, {
               success: function () {
                 MessageToast.show("Linea eliminada correctamente");
@@ -186,7 +186,7 @@ sap.ui.define([
         }
       );
 
-     
+
     },
 
     /**
@@ -200,6 +200,9 @@ sap.ui.define([
       oView.byId("inputFechaPedido").setEditable(editable);
       oView.byId("btnAgregarLinea").setEnabled(editable);
       oView.byId("btnEliminarLinea").setEnabled(editable);
+
+      oView.byId("btnGuardarPedido").setEnabled(editable);
+      oView.byId("btnCancelarEdicion").setEnabled(editable);
     },
 
     onProcesarPedido: function () {
@@ -262,7 +265,50 @@ sap.ui.define([
 
       // Navegar atrás
       oRouter.navTo("RoutePedidos");
-    }
+    },
+
+    onGuardarPedido: function () {
+      const oView = this.getView();
+      const oModel = oView.getModel();
+
+      if (!oModel.hasPendingChanges()) {
+        MessageToast.show("No hay cambios para guardar");
+        this.onHacerEditable(false);
+        return;
+      }
+
+      oView.setBusy(true);
+
+      oModel.submitChanges({
+        success: () => {
+          oView.setBusy(false);
+          MessageToast.show("Pedido guardado correctamente");
+
+          this.onHacerEditable(false);
+          oModel.refresh(true);
+        },
+        error: (oError) => {
+          oView.setBusy(false);
+          let sMsg = "Error al guardar el pedido";
+          try {
+            sMsg = JSON.parse(oError.responseText).error.message.value;
+          } catch (e) { }
+          MessageBox.error(sMsg);
+        }
+      });
+    },
+
+    onCancelarEdicion: function () {
+      const oView = this.getView();
+      const oModel = oView.getModel();
+
+      if (oModel.hasPendingChanges()) {
+        oModel.resetChanges();
+      }
+
+      this.onHacerEditable(false);
+      MessageToast.show("Cambios descartados");
+    },
 
 
   });
